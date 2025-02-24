@@ -1,0 +1,15 @@
+{notempty name="$rows"}
+<vxp-tabs v-bind="{$id}Op" class="vxp-tabs-container {$class}" {$attr|raw}>
+    {volist name="rows" id="row"}
+    <vxp-tab-panel label="{$row.name}" name="{$row.label}" {$contentAttr|raw}>
+        {if condition="$row.is_fields"}
+        <vxp-row :gap="[30, 0]">
+            {:$row.content->render()}
+        </vxp-row>
+        {else/}
+        {:$row.content->render()}
+        {/if}
+    </vxp-tab-panel>
+    {/volist}
+</vxp-tabs>
+{/notempty}

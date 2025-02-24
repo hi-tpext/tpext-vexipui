@@ -1,0 +1,19 @@
+{notempty name="tablink"}
+{:$tablink->render()}
+{/notempty}
+{notempty name="addTop"}
+{:$addTop->render()}
+{/notempty}
+<div id="{$id}" class="form-wrapper search-form" :class="{hidden : !{$id}Visible}">
+    <vxp-form class="{$class}" ref="{$id}Ref" :model="{$id}Data" v-bind="{$id}Op" {$attr|raw}>
+        {volist name="rows" id="row"}
+        <vxp-column class="vxp-form-row {$row->getClass()} row-{$row->getName()}-div" {$row->getAttrWithStyle()|raw}
+            {$row->getColSizeAttr()|raw}>
+            {:$row->render()}
+        </vxp-column>
+        {/volist}
+    </vxp-form>
+</div>
+{notempty name="addBottom"}
+{:$addBottom->render()}
+{/notempty}

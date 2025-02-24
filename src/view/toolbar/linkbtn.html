@@ -1,0 +1,9 @@
+{if condition="$href && !$useLayer"}
+<vxp-button v-bind="{$id}Op">
+    <a class="{$class} btn-{$name}" {$attr|raw} href="{$href}">{if condition="$icon"}<i class="mdi {$icon}"></i>{/if}{$label|raw}</a>
+</vxp-button>
+{else/}
+<vxp-button v-bind="{$id}Op" @click="{$id}Click">
+    <span class="{$class} btn-{$name}" {$attr|raw}>{if condition="$icon"}<i class="mdi {$icon}"></i>{/if}{$label|raw}</span>
+</vxp-button>
+{/if}

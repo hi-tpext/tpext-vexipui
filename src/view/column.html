@@ -1,0 +1,5 @@
+<vxp-column class="{$class}" {$sizeAttr|raw} {$attr|raw}>
+  {volist name="$elms" id="elm"}
+  {:$elm->render()}
+  {/volist}
+</vxp-column>

@@ -1,0 +1,26 @@
+<vxp-dropdown v-bind="{$id}Op">
+    <vxp-button size="small" :type="{$id}BtnType">
+        {if condition="$icon"}<i class="mdi {$icon}"></i>{/if}{$label|raw}
+    </vxp-button>
+    <template #drop>
+        {if condition="$checkbox"}
+        <vxp-dropdown-list>
+            <vxp-checkbox-group class="drop-down-checkbox" :vertical="true" v-model:value="{$id}Checked"
+                @change="{$id}Change">
+                {volist name="items" id="item"}
+                <vxp-checkbox value="{$item.key}">{$item.label|raw}</vxp-checkbox>
+                {/volist}
+            </vxp-checkbox-group>
+        </vxp-dropdown-list>
+        {else/}
+        <vxp-dropdown-list>
+            {volist name="items" id="item"}
+            <vxp-dropdown-item label="{$item.key}" @select="{$id}ItemClick">
+                <span class="{$item.class}" {$item.attr|raw}>{if condition="$item.icon"}<i
+                        class="mdi {$item.icon}"></i>{/if}{$item.label|raw}</span>
+            </vxp-dropdown-item>
+            {/volist}
+        </vxp-dropdown-list>
+        {/if}
+    </template>
+</vxp-dropdown>

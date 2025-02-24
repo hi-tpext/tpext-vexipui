@@ -1,0 +1,42 @@
+<vxp-row>
+    {if condition="$showLabel"}
+    {include file="$labeltempl" /}
+    {/if}
+    <vxp-column class="displayer-{$displayerType} vxp-form__item vxp-form-vars vxp-form__item--inherit"
+        {$sizeAttr[1]|raw}>
+        <vxp-form-item :pure="true" prop="{$name}" :rules="{$id}Rules">
+            <vxp-input class="hidden" type="text" v-model:value="{$VModel}"></vxp-input>
+        </vxp-form-item>
+        <vxp-space size="small" :inline="true" class="{$class}">
+            <template v-for="(tag, index) in {$VModel}.split(',').filter(x => x.trim())">
+                <vxp-tag v-if="{$id}TagIndex[row?'index_row_'+row.__pk__:'index_row_0']!== index" v-bind="{$id}Op"
+                    :closable="true" @close="{$id}HandleClose(row, index)" @click="{$id}HandleEdit(row, tag, index)"
+                    {$attr|raw}>
+                    <vxp-tooltip v-if="tag.length > 15">
+                        <template #trigger>{{ `${tag.slice(0, 15)}...` }}</template>
+                        {{ tag }}
+                    </vxp-tooltip>
+                    <span v-else>
+                        {{ tag }}
+                    </span>
+                </vxp-tag>
+                <vxp-input v-else type="text" class="new-tag" v-model:value.lazy="{$id}InputValue1"
+                    :ref="el => {$id}AddInput1Ref(el, row)" size="small" @keyup.enter="{$id}InputConfirm1(row, index)"
+                    @blur="{$id}InputConfirm1(row, index)">
+                </vxp-input>
+            </template>
+            <div>
+                <vxp-input type="text" class="new-tag" placeholder="{$placeholder}"
+                    v-show="{$id}InputVisible[row?'input2_row_'+row.__pk__:'input2_row_0']"
+                    v-model:value.lazy="{$id}InputValue2" :ref="el => {$id}AddInput2Ref(el, row)" size="small"
+                    @keyup.enter="{$id}InputConfirm2(row)" @blur="{$id}InputConfirm2(row)">
+                </vxp-input>
+                <vxp-button v-show="!{$id}InputVisible[row?'input2_row_'+row.__pk__:'input2_row_0']" :dashed="true"
+                    size="small" type="primary" :icon="{$id}Plus" @click="{$id}ShowInput(row)">
+                    {:__blang('bilder_page_add_text')}
+                </vxp-button>
+            </div>
+        </vxp-space>
+        {include file="$helptempl" /}
+    </vxp-column>
+</vxp-row>

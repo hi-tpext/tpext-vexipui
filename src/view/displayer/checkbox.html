@@ -1,0 +1,11 @@
+{include file="$begintempl" /}
+<vxp-checkbox-group class="{$class}" v-bind="{$id}Op" v-model:value="{$VModel}" {$attr|raw}>
+    {if condition="$checkallBtn"}
+    <vxp-checkbox :control="true">
+        {$checkallBtn|raw}
+    </vxp-checkbox>
+    {/if}
+    <vxp-checkbox v-for="item in (row?row.__field_info__['{$name}']['options']:{$id}Options)" :key="item.value"
+        :disabled="item.disabled" :value="item.value">{{item.label}}</vxp-checkbox>
+</vxp-checkbox-group>
+{include file="$endtempl" /}

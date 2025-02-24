@@ -1,0 +1,11 @@
+{include file="$begintempl" /}
+<vxp-select class="{$class}" placeholder="{$placeholder}" :options="{$id}Options" v-bind="{$id}Op" :visible="{$id}Visible"
+    v-model:value="{$VModel}" @toggle="(visible)=>{$id}Visible=visible" @cancel="{$id}Cancel" {$attr|raw}>
+    <template #list>
+        <div class="vxp-select__list">
+            <vxp-tree ref="{$id}TreeRef" class="{$class}" :data="{$id}TreeOptions" v-bind="{$id}TreeOp"
+                @node-change="{$id}NodeChange" @node-select="{$id}NodeChange" @node-cancel="{$id}NodeChange"></vxp-tree>
+        </div>
+    </template>
+</vxp-select>
+{include file="$endtempl" /}

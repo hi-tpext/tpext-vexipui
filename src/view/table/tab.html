@@ -1,0 +1,11 @@
+{notempty name="$options"}
+<vxp-tabs v-bind="{$id}Op" class="vxp-tabs-container search-tab-link {$class}" @change="{$id}Click" {$attr|raw}>
+    {volist name="options" id="option"}
+    <vxp-tab-panel name="{:strip_tags($option)}" label="{$key}">
+        <template #title>
+            {$option|raw}
+        </template>
+    </vxp-tab-panel>
+    {/volist}
+</vxp-tabs>
+{/notempty}

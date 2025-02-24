@@ -1,0 +1,11 @@
+{if condition="$hasWrapper"}
+<vxp-row>
+{if condition="$showLabel"}
+{include file="$labeltempl" /}
+{/if}
+{if condition="$propBind"}
+<vxp-form-item class="displayer-{$displayerType}" prop="{$name}" :rules="{$id}Rules" {$sizeAttr[1]|raw}>
+{else/}
+<vxp-form-item class="displayer-{$displayerType}" {$sizeAttr[1]|raw}>
+{/if}
+{/if}

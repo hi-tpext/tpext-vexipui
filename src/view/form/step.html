@@ -1,0 +1,32 @@
+{notempty name="$rows"}
+<vxp-row :gap="[30, 0]" justify="center">
+    <vxp-column {$sizeAttr[0]|raw}></vxp-column>
+    <vxp-column {$sizeAttr[1]|raw}>
+        <div class="vxp-step-tabs">
+            <div class="vxp-alert vxp-alert--primary">
+                <vxp-radio-group v-bind="{$id}Op" v-model:value="{$id}Index">
+                    <vxp-radio v-for="item in {$id}Options" :key="item.index" :disabled="item.index>{$id}Index"
+                        :label="item.index">{{item.label}}</vxp-radio>
+                </vxp-radio-group>
+            </div>
+            {volist name="rows" id="row"}
+            <div v-show="{$id}Index=={$row.index}">
+                {:$row.content->render()}
+            </div>
+            {/volist}
+        </div>
+        {if condition="!$readonly"}
+        <div class="vxp-step-buttons">
+            <vxp-button type="info" :disabled="{$id}Index == 0"
+                @click="{$id}PrevClick">{:__blang('bilder_step_prev')}</vxp-button>
+            <vxp-button type="primary" v-show="{$id}Index < {$id}Options.length - 1"
+                :disabled="{$id}Index == {$id}Options.length - 1"
+                @click="{$id}NextClick">{:__blang('bilder_step_next')}</vxp-button>
+            <vxp-button type="success" v-show="{$id}Index == {$id}Options.length - 1"
+                @click="{$id}FinishClick">{:__blang('bilder_step_finish')}</vxp-button>
+
+        </div>
+        {/if}
+    </vxp-column>
+</vxp-row>
+{/notempty}

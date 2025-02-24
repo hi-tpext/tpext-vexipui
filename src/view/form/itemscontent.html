@@ -1,0 +1,57 @@
+<div class="table-wrapper">
+  <vxp-table class="{$class}" ref="{$id}Ref" v-bind="{$id}Op" {$attr|raw}>
+    <template #empty>
+      {$emptyText|raw}
+    </template>
+    {foreach name="list" id="displayer" key="co" index="i"}
+    <vxp-table-column v-bind="{$id}Columns['{$co}']" :order="{$i}">
+      <template #head="{column, index}">
+        <div class="table-column-header">
+          <strong v-if="{$id}Columns['{$co}'].meta.required" title="{:__blang('bilder_this_field_is_required')}"
+            class="field-required">*&nbsp;</strong>
+          <span v-html="{$id}Columns['{$co}'].meta.titleRaw"></span>
+        </div>
+      </template>
+      <template #default="{row, column, skip}">
+        <div v-if="!skip && row && row.{$co}!==undefined" class="column-field-wrapper"
+          :class="[...(row.__field_info__['{$co}'].matchClass||[]), 'displayer-' + {$id}Columns['{$co}'].meta.displayerType, {$id}Errors[row.__pk__]['{$co}']]">
+          <vxp-form-item :pure="true"><!--为了符号一个form-item下一个输入组件的规则，在外面套一个纯净（pure="true"）的form-item-->
+            {:$displayer->render()}
+          </vxp-form-item>
+        </div>
+      </template>
+    </vxp-table-column>
+    {/foreach}
+    {if condition="$canDelete || $canAdd"}
+    <vxp-table-column name="{$actionRowText}" text-align="center" id-key="__action__" :order="99" :width="60">
+      <template #default="{row, column, skip}">
+        <div v-if="!skip && row && row.__pk__!==undefined">
+          {if condition="$canDelete"}
+          <template v-if="row.__pk__ !== '__add__'">
+            <vxp-button v-if="row.__del__== 0" v-bind="{$id}DelBtnOp" @click="{$id}Delete(row)"
+              :disabled="!row.__can_delete__">
+              <span class="action-delete" title="{:__blang('bilder_remove')}">
+                <i class="mdi mdi-delete"></i>
+              </span>
+            </vxp-button>
+            <vxp-button v-if="row.__del__== 1" v-bind="{$id}AddBtnOp" @click="{$id}Recover(row)"
+              :disabled="!row.__can_delete__">
+              <span class="action-recover" title="{:__blang('bilder_recover')}">
+                <i class="mdi mdi-restart"></i>
+              </span>
+            </vxp-button>
+          </template>
+          {/if}
+          {if condition="$canAdd"}
+          <vxp-button v-if="row.__pk__ == '__add__'" v-bind="{$id}AddBtnOp" @click="{$id}Add()">
+            <span class="action-newone" title="{:__blang('bilder_new_one_item')}">
+              <i class="mdi mdi-plus-circle-outline"></i>
+            </span>
+          </vxp-button>
+          {/if}
+        </div>
+      </template>
+    </vxp-table-column>
+    {/if}
+  </vxp-table>
+</div>

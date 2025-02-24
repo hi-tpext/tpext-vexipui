@@ -1,0 +1,10 @@
+{volist name="elmsLeft" id="elm"}
+{:$elm->render()}
+{/volist}
+{notempty name="$elmsRight"}
+<div class="pull-right">
+    {volist name="elmsRight" id="elm"}
+    {:$elm->render()}
+    {/volist}
+</div>
+{/notempty}

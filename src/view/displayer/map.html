@@ -1,0 +1,31 @@
+{include file="$begintempl" /}
+<div class="vxp-map">
+    <vxp-form-item :pure="true" prop="{$name}" :rules="{$id}Rules">
+        <vxp-input id="{$id}" type="text" placeholder="{$placeholder}" v-bind="{$id}Op" v-model:value.lazy="{$VModel}">
+            {if condition="$befor"}
+            <template #befor>{$befor|raw}</template>
+            {/if}
+            {if condition="$after"}
+            <template #after>{$after|raw}</template>
+            {/if}
+            {if condition="$prefix"}
+            <template #prefix>{$prefix|raw}</template>
+            {/if}
+            {if condition="$suffix"}
+            <template #suffix>{$suffix|raw}</template>
+            {/if}
+        </vxp-input>
+    </vxp-form-item>
+    {if condition="$maptype neq 'yandex' && !$readonly && !$disabled" }
+    <FormItem :pure="true">
+        <vxp-input class="vxp-map-search" title="若无法搜索，检查是否填写了正确的js apikey" v-model:value.lazy="{$id}Search" id="search-{$id}"
+            type="text" placeholder="{:__blang('bilder_map_search_place')}">
+            <template #prefix>
+                <i class="mdi mdi-search-web"></i>
+            </template>
+        </vxp-input>
+    </FormItem>
+    {/if}
+    <div id="map-{$id}" {$mapStyle|raw}></div>
+</div>
+{include file="$endtempl" /}

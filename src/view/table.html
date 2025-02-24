@@ -1,0 +1,62 @@
+{notempty name="searchForm"}
+{:$searchForm->render()}
+{/notempty}
+{notempty name="toolbar"}
+<div class="toolbar-wrapper">
+    {:$toolbar->render()}
+</div>
+{/notempty}
+<div id="{$id}">
+    {notempty name="addTop"}
+    {:$addTop->render()}
+    {/notempty}
+    <div class="table-wrapper">
+        <vxp-table class="{$class}" v-loading="{$id}Loading" ref="{$id}Ref" :data="{$id}Data" v-bind="{$id}Op"
+            @cell-click="{$id}CellClick" @cell-dblclick="{$id}CellDblClick" @row-check="{$id}SelectChange"
+            @row-check-all="{$id}SelectAll" @row-enter="{$id}RowEnter" @row-sort="{$id}RowSort" {$attr|raw}>
+            <template #empty>
+                <div v-if="!{$id}Loading">
+                    {$emptyText|raw}
+                </div>
+                <div v-else>
+                    {:__blang('bilder_loading')}
+                </div>
+            </template>
+            {if condition="$useCheckbox"}
+            <vxp-table-column :width="30" type="selection" :order="0"></vxp-table-column>
+            {/if}
+            {foreach name="list" id="displayer" key="co" index="i"}
+            <vxp-table-column v-bind="{$id}Columns['{$co}']" :class="['current']"
+                v-if="{$id}UseChooseColumns.length==0 || {$id}UseChooseColumns[0]=='*' || {$id}UseChooseColumns.indexOf('{$co}')>-1"
+                :order="{$i}">
+                <template #head="{column, index}">
+                    <span class="table-column-header" v-html="{$id}Columns['{$co}'].meta.titleRaw"></span>
+                </template>
+                <template #default="{row, rowIndex, column, columnIndex}">
+                    <div v-if="row && row.{$co}!==undefined" class="column-field-wrapper"
+                        :class="[...(row.__field_info__['{$co}'].matchClass||[]), 'displayer-' + {$id}Columns['{$co}'].meta.displayerType]">
+                        {:$displayer->render()}
+                    </div>
+                </template>
+            </vxp-table-column>
+            {/foreach}
+            {if condition="$useActionbar"}
+            <vxp-table-column name="{$actionRowText}" text-align="center" id-key="__action__" :order="99"
+                :width="{$actionRowWidth}">
+                <template #default="{row, rowIndex, column, columnIndex}">
+                    <div v-if="row && row.__action__!==undefined" class="table-column-buttons">
+                        {:$actionbar->render()}
+                    </div>
+                </template>
+            </vxp-table-column>
+            {/if}
+        </vxp-table>
+        <div class="table-pager">
+            <vxp-pagination v-bind="{$id}PagerConfig" v-model:active="{$id}ActivePage" v-model:page-size="{$id}PageSize"
+                @change="{$id}GetData" @page-size-change="{$id}GetData"></vxp-pagination>
+        </div>
+    </div>
+    {notempty name="addBottom"}
+    {:$addBottom->render()}
+    {/notempty}
+</div>

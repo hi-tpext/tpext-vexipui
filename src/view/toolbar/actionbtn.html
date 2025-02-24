@@ -1,0 +1,12 @@
+{if condition="$href && !$useLayer"}
+<vxp-button v-bind="{$id}Op" v-show="!row.__action__.{$id}.hidden" :disabled="row.__action__.{$id}.disabled">
+    <a class="action-{$name} {$class}" {$attr|raw} :href="row.__action__.{$id}.href">{if condition="$icon"}<i
+            class="mdi {$icon}"></i>{/if}<span v-html="row.__action__.{$id}.label"></span></a>
+</vxp-button>
+{else/}
+<vxp-button v-bind="{$id}Op" v-show="!row.__action__.{$id}.hidden" :disabled="row.__action__.{$id}.disabled"
+    @click="{$id}Click(row)">
+    <span class="action-{$name} {$class}" {$attr|raw}>{if condition="$icon"}<i class="mdi {$icon}"></i>{/if}<span
+            v-html="row.__action__.{$id}.label"></span></span>
+</vxp-button>
+{/if}

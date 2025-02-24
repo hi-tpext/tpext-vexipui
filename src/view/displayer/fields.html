@@ -1,0 +1,9 @@
+{if condition="$hasWrapper"}
+{include file="$begintempl" /}
+<vxp-row :gap="[{$gap[0]}, {$gap[1]}]" class="{$class} fields-content" {$attr|raw}>
+    {:$fieldsContent->render()}
+</vxp-row>
+{include file="$endtempl" /}
+{else/}
+{:$fieldsContent->render()}
+{/if}

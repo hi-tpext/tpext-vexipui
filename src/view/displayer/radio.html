@@ -1,0 +1,6 @@
+{include file="$begintempl" /}
+<vxp-radio-group class="{$class}" v-bind="{$id}Op" v-model:value="{$VModel}" {$attr|raw}>
+    <vxp-radio v-for="item in (row?row.__field_info__['{$name}']['options']:{$id}Options)" :key="item.value"
+        :disabled="item.disabled" :label="item.value">{{item.label}}</vxp-radio>
+</vxp-radio-group>
+{include file="$endtempl" /}

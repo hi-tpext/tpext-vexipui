@@ -1,0 +1,4 @@
+{include file="$begintempl" /}
+<vxp-number-input class="{$class}" placeholder="{$placeholder}" v-bind="{$id}Op" v-model:value="{$VModel}"
+    @change="{$id}Change(row, $event)" {$attr|raw}></vxp-number-input>
+{include file="$endtempl" /}

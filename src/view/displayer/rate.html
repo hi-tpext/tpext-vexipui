@@ -1,0 +1,11 @@
+{include file="$begintempl" /}
+<vxp-slider class="{$class}" v-bind="{$id}Op" :markers="{$id}Markers" :state="{$id}State" v-model:value="{$VModel}"
+    {$attr|raw}>
+    <template #trigger="{ value }">
+        <vxp-icon :icon="{$id}Star" :scale="2" style="color:rgb(255, 187, 51)"></vxp-icon>
+    </template>
+    <template #tip="{ value }">
+        <span class="vxp-slider-score-text" v-text="{$id}Text"></span>
+    </template>
+</vxp-slider>
+{include file="$endtempl" /}

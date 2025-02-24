@@ -1,0 +1,5 @@
+<vxp-column class="displayer-{$displayerType}" {$sizeAttr[1]|raw}>
+    <vxp-alert v-if="{$VModel}" type="warning" :closable="false" :icon="true">
+        <span v-text="{$VModel}"></span>
+    </vxp-alert>
+</vxp-column>

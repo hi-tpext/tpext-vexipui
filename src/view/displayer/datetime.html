@@ -1,0 +1,4 @@
+{include file="$begintempl" /}
+<vxp-date-picker class="{$class}" type="{$type}" placeholder="{$placeholder}" v-bind="{$id}Op" v-model:value="{$VModel}__tmp"
+    v-model:formatted-value="{$VModel}" {$attr|raw}></vxp-date-picker>
+{include file="$endtempl" /}

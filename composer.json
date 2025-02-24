@@ -1,0 +1,34 @@
+{
+    "name": "ichynul/tpext-vexipui",
+    "description": "thinkphp extension",
+    "type": "library",
+    "keywords": [
+        "thinkphp"
+    ],
+    "homepage": "http://www.ynyysc.com/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "ichynul",
+            "email": "ichynul@163.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^2.7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "tpext\\builder\\": "src/"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    },
+    "extra": {
+        "think": {
+            "services": [
+                "tpext\\builder\\common\\Service"
+            ]
+        }
+    }
+}

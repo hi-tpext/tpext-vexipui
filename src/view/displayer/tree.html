@@ -1,0 +1,13 @@
+<vxp-row>
+    {if condition="$showLabel"}
+    {include file="$labeltempl" /}
+    {/if}
+    <vxp-column class="displayer-{$displayerType} vxp-form__item vxp-form-vars vxp-form__item--inherit" {$sizeAttr[1]|raw}>
+        <vxp-form-item :pure="true" prop="{$name}__tmp" :rules="{$id}Rules">
+            <vxp-input class="hidden" type="text" v-model:value="{$VModel}__tmp"></vxp-input>
+        </vxp-form-item>
+        <vxp-tree ref="{$id}Ref" class="{$class}" :data="{$id}Options" v-bind="{$id}Op" @node-change="{$id}NodeChange"
+            @node-select="{$id}NodeChange" @node-cancel="{$id}NodeChange" {$attr|raw}></vxp-tree>
+        {include file="$helptempl" /}
+    </vxp-column>
+</vxp-row>

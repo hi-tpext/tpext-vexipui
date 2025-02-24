@@ -1,0 +1,17 @@
+{include file="$begintempl" /}
+<vxp-select class="{$class}" placeholder="{$placeholder}"
+    :options="row?row.__field_info__['{$name}']['options']:{$id}Options" v-bind="{$id}Op" v-model:value="{$VModel}"
+    @filter-input="{$id}RemoteSearch" @change="{$id}Change" @focus="{$id}Focus(row, $event)" @mouseover="{$id}Focus(row, $event)" {$attr|raw}>
+    {if condition="$prefix"}
+    <template #prefix>{$prefix|raw}</template>
+    {/if}
+    {if condition="$suffix"}
+    <template #suffix>{$suffix|raw}</template>
+    {/if}
+    {if condition="$remote"}
+    <template v-if="{$id}Error" #empty>
+        <span class="vxp-select__empty" v-text="{$id}Error"></span>
+    </template>
+    {/if}
+</vxp-select>
+{include file="$endtempl" /}

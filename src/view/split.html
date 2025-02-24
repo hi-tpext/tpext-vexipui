@@ -1,0 +1,17 @@
+<div class="{$class} split-horizontal" {$attr|raw}>
+  <div v-show="{$id}Open" class="split-one" :style="{width:{$id}OneWidth}">
+    {if condition="$one"}
+    {:$one->render()}
+    {/if}
+  </div>
+  <div class="split-two" :class="{$id}Open?'split-half':'split-full'" :style="{width:{$id}TwoWidth}">
+    <div class="split-line" v-show="{$id}Open"></div>
+    {if condition="$tow"}
+    {:$tow->render()}
+    {/if}
+    <a href="#" :title="{$id}ActionTitle" class="split-btn" @click="{$id}Open=!{$id}Open">
+      <i v-if="{$id}Open" class="mdi mdi-format-horizontal-align-left"></i>
+      <i v-else class="mdi mdi-format-horizontal-align-right"></i>
+    </a>
+  </div>
+</div>

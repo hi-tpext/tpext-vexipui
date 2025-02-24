@@ -1,0 +1,153 @@
+{extend name="$builderLayout"/}
+{block name="style"}
+<style>
+  {$stylesheet|raw}
+</style>
+{/block}
+
+{block name="content"}
+<div class="page-loader" id="page-loader" style="display: none;">
+  <script type="text/javascript">
+    if(/^layui\-layer\-iframe/i.test(window.name)){
+        document.getElementById('page-loader').style.display = 'block';
+    }
+  </script>
+</div>
+<div class="main-panel" style="display: none;" id="app">
+  {notempty name="$title"}
+  <div class="main-panel-heading">
+    <h4 class="main-panel-title">
+      {$title|raw}
+      {notempty name="$desc"}
+      <small> - {$desc|raw}</small>
+      {/notempty}
+    </h4>
+  </div>
+  {/notempty}
+  <div class="main-panel-body" v-loading="pageLoading">
+    <div class="main-panel-content">
+      {volist name="rows" id="row"}
+      {:$row->render()}
+      {/volist}
+    </div>
+    <div class="hidden">
+      <vxp-image-viewer v-model:active="previewActive" v-model:index="previewIndex" :src-list="previewList" :transfer="true">
+      </vxp-image-viewer>
+      <a ref="downloadRef" :href="previewImageUrl" target="_blank">{{previewImageUrl}}</a>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  window.__blang = JSON.parse('{$__blang|raw}');
+</script>
+{/block}
+{block name="script"}
+<script type="importmap">
+  {
+    "imports": {
+      "vue": "/assets/tpextvexipui/lib/vue.esm-browser.prod.js?aver={$aver}",
+      "vexip-ui": "/assets/tpextvexipui/lib/vexip-ui.min.js?aver={$aver}",
+      "@vexip-ui/icons": "/assets/tpextvexipui/lib/vexip-ui-icons.min.js?aver={$aver}"
+    }
+  }
+</script>
+<script type="module">
+  import { {$vueImport} } from 'vue';
+  import { install } from 'vexip-ui';
+  import * as VexipIcon from '@vexip-ui/icons';
+
+  import { 
+    {$componentsImport} 
+  } from 'vexip-ui';
+
+  const __getImageOrFileIco = (url, isImage) => {
+    if(__isImage(url, isImage)) {
+        return url;
+    }
+    return '/index/file/extimg?type=' + url.replace(/.+?\.(\w+)$/, '$1');
+  }
+
+  const __isImage = (url, op) => {
+      return (!/.+?\.(\w+)$/i.test(url) && op.isImage) || /.+\.(png|jpg|jpeg|gif|bmp|wbmp|webpg|ico|svg)$/i.test(url);
+  }
+  let loading = false;
+  layui.use(function(){
+    window.layer = layui.layer;
+  });
+
+  let app = createApp({
+    setup() {
+      onBeforeMount(() => {
+        document.getElementById('page-loader').remove();
+        document.getElementById('app').style.display = 'block';
+      });
+      onMounted(() => {
+        
+        {$onMountedScript|raw}
+
+      });
+
+      {$setupScript|raw}
+
+      const previewRef = ref(null);
+      const downloadRef = ref(null);
+      const previewImageUrl = ref();
+      const previewList = ref([]);
+      const pageLoading = ref(false);
+      const previewActive = ref(false);
+      const previewIndex = ref(0);
+
+      const previewFile = (file, files, isImage) => {
+          if(!Array.isArray(files)) {
+              files = files.split(',').filter(x => x.trim());
+          }
+          previewImageUrl.value = file;
+          if(__isImage(file, isImage)) {
+              previewImageUrl.value = file;
+              let images = files.filter(x => __isImage(x, isImage));
+              let i = 0;
+              images.forEach(x => {
+                  if(x === file) {
+                    previewIndex.value = i;
+                    return;
+                  }
+                  i += 1;
+              });
+              previewList.value = images;
+              nextTick(() => {
+                previewActive.value = true;
+              });
+          } else {
+              nextTick(() => {
+                  downloadRef.value.click();
+              });
+          }
+      };
+
+      return {
+        pageLoading,
+        previewFile,
+        previewActive,
+        previewIndex,
+        downloadRef,
+        previewImageUrl,
+        previewList,
+        {$vueTokens|raw}
+      };
+    }
+  });
+  app.use(install, { namespace: 'vxp', prefix: 'vxp'});
+  app.config.globalProperties.$__isImage = __isImage;
+  app.config.globalProperties.$__getImageOrFileIco = __getImageOrFileIco;
+  window.vm = app.mount('#app');
+  //导出为全局变量
+  window.VxpLoading = VxpLoading;
+  window.VxpAlert = VxpAlert;
+  window.VxpModal = VxpModal;
+  window.VxpMessage = VxpMessage;
+  window.VxpNotice = VxpNotice;
+  window.VxpConfirm = VxpConfirm;
+
+</script>
+<div class="hidden" id="script-div"></div>
+{/block}

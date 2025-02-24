@@ -1,0 +1,7 @@
+{include file="$begintempl" /}
+{if condition="$readonly"}
+<div class="field-show editor-readonly">{$value|raw}</div>
+{else/}
+<textarea name="{$name}" id="{$id}">{$value|raw}</textarea>
+{/if}
+{include file="$endtempl" /}

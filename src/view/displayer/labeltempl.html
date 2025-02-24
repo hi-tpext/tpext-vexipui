@@ -1,0 +1,9 @@
+<vxp-column class="label-col" {$sizeAttr[0]|raw}>
+    <label class="vxp-form__label {$labelClass}" {$labelAttr|raw} for="{$id}">
+        {if condition="$formMode == 'form'"}
+        <strong title="{:__blang('bilder_this_field_is_required')}" class="field-required"
+            {$requiredStyle|raw}>*</strong>
+        {/if}
+        {$label|raw}
+    </label>
+</vxp-column>

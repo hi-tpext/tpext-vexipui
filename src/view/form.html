@@ -1,0 +1,21 @@
+<div id="{$id}" class="form-wrapper" v-loading="{$id}Loading">
+    <vxp-form class="{$class}" ref="{$id}Ref" :model="{$id}Data" v-bind="{$id}Op" {$attr|raw}>
+        {volist name="rows" id="row"}
+        {if condition="$row instanceof tpext\builder\common\Tab"}
+        <vxp-column :span="24">
+            {:$row->render()}
+        </vxp-column>
+        {elseif condition="$row instanceof tpext\builder\form\step"}
+        <vxp-column :span="24">
+            {:$row->render()}
+        </vxp-column>
+        {else/}
+        <vxp-column class="vxp-form-row {$row->getClass()} row-{$row->getName()}-div" {$row->getAttrWithStyle()|raw}
+            {$row->getColSizeAttr()|raw}>
+            {:$row->render()}
+        </vxp-column>
+        {/if}
+        {/volist}
+    </vxp-form>
+</div>
+{{{$id}Data}}

@@ -1,0 +1,18 @@
+{include file="$begintempl" /}
+{if condition="$inline"}
+<span v-html="{$VModel}" class="the-field {$class}" {$attr|raw}></span>
+{else/}
+<div class="field-raw">
+    {if condition="$inTable"}
+    <vxp-tooltip :width="350" :transfer="true" placement="top-start">
+        <template #trigger>
+            <span v-html="{$VModel}" class="the-field {$class}" {$attr|raw}></span>
+        </template>
+        <div v-html="{$VModel}"></div>
+    </vxp-tooltip>
+    {else/}
+    <span v-html="{$VModel}" class="the-field {$class}" {$attr|raw}></span>
+    {/if}
+</div>
+{/if}
+{include file="$endtempl" /}

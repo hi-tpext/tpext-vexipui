@@ -1,0 +1,110 @@
+{include file="$begintempl" /}
+<div class="vxp-multiplefile {$class}">
+    <div class="vxp-image-priview">
+        <ul class="vxp-upload-list vxp-upload-list--text">
+            <li v-for="(file, index) in {$VModel}.split(',').filter(x => x.trim())" class="vxp-upload-list__li">
+                <div class="vxp-upload-list__item">
+                    <div class="pic-item-cover" {$thumbnailStyle|raw}>
+                        <figure>
+                            <img object-fit="fill"
+                                :src="$__getImageOrFileIco({$VModel}__thumbs[index] || file, {$id}Op.isImage)"
+                                :alt="file" />
+                            <figcaption>
+                                <span title="{:__blang('bilder_action_view')}" class="opt-btn preview-file"
+                                    @click="previewFile(file, {$VModel}, {$id}Op.isImage)">
+                                    <i class="mdi mdi-eye"></i>
+                                </span>
+                                {if condition="$canUpload"}
+                                <span title="{:__blang('bilder_action_delete')}" class="opt-btn delete-file"
+                                    @click="{$id}RemoveFile(row, index)">
+                                    <i class="mdi mdi-delete"></i>
+                                </span>
+                                {/if}
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div><!--v-if-->
+            </li>
+            {if condition="$canUpload && $cover"}
+            <li v-show="{$id}Op.fileNumLimit < 1 || {$VModel}.split(',').filter(x => x.trim()).length < {$id}Op.fileNumLimit"
+                class="vxp-upload-list__li">
+                <div class="vxp-upload-list__item">
+                    <div class="pic-item-cover" {$thumbnailStyle|raw}>
+                        <figure>
+                            <img object-fit="fill" src="{$cover}" alt="cover" />
+                            <figcaption>
+                                <span title="{:__blang('bilder_upload_nwe_file')}" class="opt-btn upload-file"
+                                    @click="{$id}UploadFile(row)">
+                                    <i class="mdi mdi-folder-open"></i>
+                                </span>
+                                {if condition="$showChooseBtn || ($inTable && !$showUploadBtn)"}
+                                <span title="{:__blang('bilder_choose_uploaded_file')}" class="opt-btn choose-file"
+                                    @click="{$id}ChooseFile(row)">
+                                    <i class="mdi mdi mdi-file-find"></i>
+                                </span>
+                                {/if}
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+            </li>
+            {/if}
+        </ul>
+    </div>
+    {if condition="$canUpload"}
+    <vxp-upload ref="{$id}Ref" class="hidden" v-bind="{$id}Op" :on-before-select="{$id}BeforeAddFile"
+        :before-upload="{$id}BeforeUpload" @success="{$id}Success" @error="{$id}Error" @progress="{$id}Progress"
+        {$attr|raw}>
+        <div class="hidden">
+            <a ref="{$id}UploadRef"></a>
+        </div>
+    </vxp-upload>
+    {if condition="$showInput"}
+    <vxp-form-item :pure="true" prop="{$name}" :rules="{$id}Rules">
+        <vxp-input type="text" class="vxp-file-upload-input" placeholder="{$placeholder}" id="{$id}-input-div"
+            v-model:value="{$VModel}">
+            <template #after>
+                {if condition="$showUploadBtn"}
+                <span title="{:__blang('bilder_upload_nwe_file')}" class="opt-btn upload-file"
+                    @click="{$id}UploadFile(row)">
+                    <i class="mdi mdi-folder-open"></i>{:__blang('bilder_upload_file_button')}
+                </span>
+                {/if}
+                {if condition="$showChooseBtn"}
+                <span title="{:__blang('bilder_choose_uploaded_file')}" class="opt-btn choose-file"
+                    @click="{$id}ChooseFile(row)">
+                    <i class="mdi mdi mdi-file-find"></i>{:__blang('bilder_choose_file_button')}
+                </span>
+                {/if}
+            </template>
+        </vxp-input>
+        {else/}
+        <div class="bottom-control-buttons">
+            <vxp-input type="hidden" class="hidden vxp-file-upload-input" placeholder="{$placeholder}"
+                id="{$id}-input-div" v-model:value="{$VModel}">
+            </vxp-input>
+            {if condition="$showUploadBtn"}
+            <vxp-button size="small" title="{:__blang('bilder_upload_nwe_file')}">
+                <span class="opt-btn upload-file" @click="{$id}UploadFile(row)">
+                    <i class="mdi mdi-folder-open"></i>
+                    {if condition="!$inTable"}
+                    {:__blang('bilder_upload_file_button')}
+                    {/if}
+                </span>
+            </vxp-button>
+            {/if}
+            {if condition="$showChooseBtn"}
+            <vxp-button size="small" title="{:__blang('bilder_choose_uploaded_file')}">
+                <span class="opt-btn choose-file" @click="{$id}ChooseFile(row)"><i class="mdi mdi mdi-file-find"></i>
+                    {if condition="!$inTable"}
+                    {:__blang('bilder_choose_file_button')}
+                    {/if}
+                </span>
+            </vxp-button>
+            {/if}
+        </div>
+    </vxp-form-item>
+    {/if}
+    {/if}
+</div>
+{include file="$endtempl" /}
