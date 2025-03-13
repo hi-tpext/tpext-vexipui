@@ -6,7 +6,6 @@ use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
 use tpext\builder\common\Builder;
-use tpext\builder\common\Module;
 
 /**
  * for webman
