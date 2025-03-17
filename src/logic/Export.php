@@ -63,7 +63,7 @@ class Export
             }
         }
 
-        fputcsv($fp, $headerData);
+        fputcsv($fp, $headerData, ',', '"', '\\');
 
         //来源网络
         $num = 0;
@@ -103,7 +103,7 @@ class Export
                     $row[$key] = $text;
                 }
             }
-            fputcsv($fp, $row);
+            fputcsv($fp, $row, ',', '"', '\\');
         }
         unset($row, $text);
         fclose($fp);
