@@ -108,18 +108,18 @@ trait HasLeftTree
             $data = $this->treeModel->where($this->treeScope)->order($this->treeSortField)->select();
         }
 
-        if (method_exists($this->treeModel, 'getOption')) { //读取树模型里面参数(是\tpext\builder\traits\TreeModel实例)
+        if (method_exists($this->treeModel, 'getTreeOption')) { //读取树模型里面参数(是\tpext\builder\traits\TreeModel实例)
             if (empty($this->treeTextField)) {
-                $this->treeTextField = $this->treeModel->getOption('treeTextField');
+                $this->treeTextField = $this->treeModel->getTreeOption('treeTextField');
             }
             if (empty($this->treeIdField)) {
-                $this->treeIdField = $this->treeModel->getOption('treeIdField');
+                $this->treeIdField = $this->treeModel->getTreeOption('treeIdField');
             }
             if (empty($this->treeParentIdField)) {
-                $this->treeParentIdField = $this->treeModel->getOption('treeParentIdField');
+                $this->treeParentIdField = $this->treeModel->getTreeOption('treeParentIdField');
             }
             if (empty($this->treeSortField) && $this->treeSortField !== false) {
-                $this->treeSortField = $this->treeModel->getOption('treeSortField');
+                $this->treeSortField = $this->treeModel->getTreeOption('treeSortField');
             }
         }
 

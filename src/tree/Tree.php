@@ -266,7 +266,7 @@ class Tree extends Widget implements Renderable
     const {$treeId}Ref = ref(null);
     const {$treeId}Op = ref({$configs});
     const {$treeId}Options = ref({$options});
-    const {$treeId}multiple = {$multiple};
+    const {$treeId}Multiple = {$multiple};
 
     const {$treeId}NodeChange = (data, node) => {
         {$this->onClick}

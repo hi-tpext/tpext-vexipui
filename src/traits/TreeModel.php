@@ -136,7 +136,7 @@ trait TreeModel
     public function reInit($initData)
     {
         foreach ($initData as $key => $value) {
-            $this->setOption($key, $value);
+            $this->setTreeOption($key, $value);
         }
 
         return $this;
@@ -149,7 +149,7 @@ trait TreeModel
      * @param mixed $value
      * @return $this
      */
-    public function setOption($key, $value)
+    public function setTreeOption($key, $value)
     {
         //得到所有的成员属性
         $keys = array_keys(get_class_vars(__CLASS__));
@@ -167,7 +167,7 @@ trait TreeModel
      * @param string $key
      * @return array|string
      */
-    public function getOption($key = '')
+    public function getTreeOption($key = '')
     {
         return $this->$key ?? '';
     }
