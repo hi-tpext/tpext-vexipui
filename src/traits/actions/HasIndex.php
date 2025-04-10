@@ -77,6 +77,12 @@ trait HasIndex
      */
     protected $delNotAllowed = [];
 
+    /**
+     * 是否延迟加载表格数据
+     * @var boolean
+     */
+    protected $tableDelay = false;
+
     public function index()
     {
         $builder = $this->builder($this->pageTitle, $this->indexText ?: __blang('bilder_page_index_text'), 'index');
@@ -91,16 +97,19 @@ trait HasIndex
         if ($this->isFetchIndexData()) {
             $this->initTable();
             return $this->table->partial()->render();
-        } else {
+        }
+        if ($this->tableDelay || ($this->useSearch && $this->search->hasDefault())) { //设定了延迟加载或搜索条件有非空值时，首次请求不加载数据，只返回html
             $data = [];
             $this->buildTable($data, false);
-
+            
             if ($this->asTreeList()) {
                 //树形显示，不分页
                 $this->table->paginator($this->pagesize, 1000);
             } else {
                 $this->table->paginator(1000, $this->pagesize);
             }
+        } else {
+            $this->initTable();
         }
         return $builder->render();
     }
@@ -112,7 +121,7 @@ trait HasIndex
      */
     protected function isFetchIndexData()
     {
-        return input('__fetch_data__') == 'y' ? true : false;
+        return input('__fetch_data__') == 'y';
     }
 
     /**
@@ -141,7 +150,6 @@ trait HasIndex
             $tree->multiple($this->treeMultiple);
             $this->table = $split->table();
             $tree->trigger($this->treeKey, $this->table->getSearch()->getFormId());
-
         } else {
             $this->table = $builder->table();
         }

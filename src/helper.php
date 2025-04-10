@@ -5,7 +5,7 @@ use think\facade\Request;
 use think\facade\Lang;
 
 $classMap = [
-    'tpext\\builder\\common\\Module'
+    'tpext\\builder\\common\\VexipUi'
 ];
 
 ExtLoader::addClassMap($classMap);

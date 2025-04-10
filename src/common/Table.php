@@ -77,6 +77,7 @@ class Table extends TWrapper implements Renderable
     protected $sortable = ['id'];
     protected $sortOrder = '';
     protected $partial = false;
+    protected $delay = true;//延迟读取数据，调用fill()填充数据后取消延迟
     protected $convertScripts = [];
 
     /**
@@ -286,6 +287,7 @@ class Table extends TWrapper implements Renderable
      */
     public function data($data = [])
     {
+        $this->delay = false;
         $this->data = $data;
 
         return $this;
@@ -319,6 +321,7 @@ class Table extends TWrapper implements Renderable
      */
     public function fill($data = [])
     {
+        $this->delay = false;
         if (empty($data)) {
             return $this;
         }
@@ -685,7 +688,7 @@ class Table extends TWrapper implements Renderable
                 return acc;
             }, {});
 
-         axios({
+        axios({
             method: 'get',
             url: location.href,
             responseType: 'json',
@@ -940,7 +943,7 @@ EOT;
             "{$table}Data",
             "{$table}MultipleToolbarDisabled",
             "{$table}PagerConfig",
-            "{$table}GetData",
+            "{$table}Refresh",
             "{$table}ActivePage",
             "{$table}PageSize",
             "{$table}Loading",
@@ -1021,12 +1024,14 @@ EOT;
             Builder::getInstance()->addSetupScript(implode('', $scripts));
         }
 
+        $delayLoad = $this->delay ? 'true' : 'false';
+
         $script = <<<EOT
         
-        if({$table}Data.value.length) {
-            {$table}Loading.value = false;
-        } else {
+        if({$delayLoad}) {
             {$table}GetData();
+        } else {
+            {$table}Loading.value = false;
         }
         
 EOT;

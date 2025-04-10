@@ -11,7 +11,8 @@
     {:$addTop->render()}
     {/notempty}
     <div class="table-wrapper">
-        <vxp-table class="{$class}" v-loading="{$id}Loading" ref="{$id}Ref" :data="{$id}Data" v-bind="{$id}Op"
+        <vxp-spin :active="{$id}Loading" :inner="true"></vxp-spin>
+        <vxp-table class="{$class}" ref="{$id}Ref" :data="{$id}Data" v-bind="{$id}Op"
             @cell-click="{$id}CellClick" @cell-dblclick="{$id}CellDblClick" @row-check="{$id}SelectChange"
             @row-check-all="{$id}SelectAll" @row-enter="{$id}RowEnter" @row-sort="{$id}RowSort" {$attr|raw}>
             <template #empty>
@@ -53,7 +54,7 @@
         </vxp-table>
         <div class="table-pager">
             <vxp-pagination v-bind="{$id}PagerConfig" v-model:active="{$id}ActivePage" v-model:page-size="{$id}PageSize"
-                @change="{$id}GetData" @page-size-change="{$id}GetData"></vxp-pagination>
+                @change="{$id}Refresh" @page-size-change="{$id}Refresh"></vxp-pagination>
         </div>
     </div>
     {notempty name="addBottom"}

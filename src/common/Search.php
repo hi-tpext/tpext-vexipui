@@ -31,7 +31,7 @@ class Search extends SWrapper implements Renderable
     /**
      * Undocumented variable
      *
-     * @var FRow[] 
+     * @var SRow[]|Fillable[]
      */
     protected $rows = [];
     protected $searchButtonsCalled = false;
@@ -113,6 +113,25 @@ class Search extends SWrapper implements Renderable
     public function empty()
     {
         return empty($this->rows);
+    }
+
+    /**
+     * 表单是否填充了默认值
+     * @return bool
+     */
+    public function hasDefault(): bool
+    {
+        foreach ($this->rows as $row) {
+            if ($row instanceof SRow) {
+                $default = $row->getDisplayer()->getDefault();
+
+                if (!($default === '' || $default === null || $default === [])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -623,7 +642,9 @@ EOT;
         }
         $this->tablink = null;
         foreach ($this->rows as $row) {
-            $row->destroy();
+            if ($row instanceof SRow) {
+                $row->destroy();
+            }
         }
         $this->rows = null;
     }
