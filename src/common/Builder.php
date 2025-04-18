@@ -842,6 +842,9 @@ class Builder implements Renderable
      */
     public static function checkUrl($url)
     {
+        if ($url === '' || $url === '#' || stripos($url, 'javascript:') === 0) {
+            return true;
+        }
         //如果不是完整的[moudle/controller/action]格式
         if (preg_match('/^\w+$/', $url) || preg_match('/^\w+(\.\w+)?\/\w+$/', $url)) {
             $url = url($url);
