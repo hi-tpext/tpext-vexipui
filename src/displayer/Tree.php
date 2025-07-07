@@ -74,7 +74,7 @@ class Tree extends Field
 
     /**
      * 多选时，是否父子节点不级联
-     * @param mixed $val
+     * @param bool $val
      * @return $this
      */
     public function noCascaded($val = true)
