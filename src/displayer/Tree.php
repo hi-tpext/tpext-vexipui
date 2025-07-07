@@ -27,9 +27,8 @@ class Tree extends Field
     protected $jsOptions = [
         'accordion' => false, //是否为手风琴模式，每次只打开一个同级树节点展开
         'floor-select' => false, //开启后，当选择存在下级的节点时，会触发节点的展开收起，无下级时才会触发选择取消事件
-        'check-strictly' => false, //[多选]是否严格的遵循父子节点不互相关联的原则，设为true后父节点选中状态会影响子节点的选中状态。
         'indent' => '16px', //节点缩进距离
-        'no-cascaded' => false, //使父子节点能被独立勾选
+        'no-cascaded' => true, //使父子节点能被独立勾选
         'use-y-bar' => false, //设置树是否使用纵向滚动条
         'virtual' => false, //是否开启虚拟滚动
         'link-line' => 'dashed', //是否连接线
@@ -43,7 +42,7 @@ class Tree extends Field
             'checked' => 'checked',
         ],
         'root-id' => '',
-        'no-build-tree' => true,//直接传染树形数据，不再构建树结构
+        'no-build-tree' => true, //直接传染树形数据，不再构建树结构
         'block-effect' => true, //是否开启块级效果
         'multiple' => false, //是否多选
     ];
@@ -70,6 +69,18 @@ class Tree extends Field
     {
         $this->multiple = $val;
         $this->valueType = $val ? 'array' : 'string';
+        return $this;
+    }
+
+    /**
+     * 多选时，是否父子节点不级联
+     * @param mixed $val
+     * @return $this
+     */
+    public function noCascaded($val = true)
+    {
+        $this->jsOptions['no-cascaded'] = $val;
+
         return $this;
     }
 
