@@ -248,6 +248,10 @@ class ImageHandler implements IImage
             $this->driver = $this->createDriver($driverType);
         }
 
+        if (stripos($imgPath, App::getRootPath()) === false) {
+            $imgPath = App::getRootPath() . 'public' . ltrim($imgPath, '.');
+        }
+
         return $this->driver->init($imgPath);
     }
 
@@ -322,7 +326,7 @@ class ImageHandler implements IImage
      */
     public function gdAvailable()
     {
-        return (extension_loaded('gd') && function_exists('gd_info'));
+        return extension_loaded('gd') && function_exists('gd_info');
     }
 
     /**
@@ -332,6 +336,6 @@ class ImageHandler implements IImage
      */
     public function imagickAvailable()
     {
-        return (extension_loaded('imagick') && class_exists('Imagick'));
+        return extension_loaded('imagick') && class_exists('Imagick');
     }
 }

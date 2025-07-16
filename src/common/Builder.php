@@ -2,12 +2,13 @@
 
 namespace tpext\builder\common;
 
+use Webman\Context;
 use tpext\think\App;
 use tpext\think\View;
 use think\facade\Session;
 use tpext\common\ExtLoader;
-use tpext\builder\inface\Auth;
 use tpext\builder\tree\Tree;
+use tpext\builder\inface\Auth;
 use tpext\builder\inface\Renderable;
 
 class Builder implements Renderable
@@ -95,6 +96,8 @@ class Builder implements Renderable
 
     protected static $instance = null;
 
+    protected static $isWebmanContext = null;
+
     protected function __construct($title, $desc)
     {
         $this->title = $title;
@@ -110,9 +113,19 @@ class Builder implements Renderable
      */
     public static function getInstance($title = '', $desc = '')
     {
-        if (self::$instance == null) {
+        if (is_null(self::$isWebmanContext)) {
+            self::$isWebmanContext = class_exists(Context::class);
+        }
+        if (self::$isWebmanContext) {
+            self::$instance = Context::get(static::class);
+        }
+        if (!self::$instance) {
             self::$instance = new static($title, $desc);
             self::$instance->created();
+            
+            if (self::$isWebmanContext) {
+                Context::set(static::class, self::$instance);
+            }
 
             ExtLoader::trigger('tpext_create_builder', self::$instance);
         } else {
@@ -134,9 +147,17 @@ class Builder implements Renderable
      */
     public static function destroyInstance()
     {
+        if (self::$isWebmanContext) {
+            self::$instance = Context::get(static::class);
+        }
+
         if (self::$instance) {
             self::$instance->destroy();
             self::$instance = null;
+
+            if (self::$isWebmanContext) {
+                Context::set(static::class, null);
+            }
         }
     }
 
@@ -906,8 +927,8 @@ EOT;
         }
 
         if (static::$minify) {
-            $this->js = $this->customJs;
-            $this->css = $this->customCss;
+            $this->js = array_merge(['/assets/minify/min.js'], $this->customJs);
+            $this->css = array_merge(['/assets/minify/min.css'], $this->customCss);
         } else {
             $this->js = array_merge($this->js, $this->customJs);
             $this->css = array_merge($this->css, $this->customCss);

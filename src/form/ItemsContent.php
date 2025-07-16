@@ -437,6 +437,11 @@ class ItemsContent extends FWrapper
                         if ($this->canAdd) {
                             //填充模板默认值
                             Arr::set($this->template, $name, $displayer->lockValue(false)->value('')->renderValue());
+                            if ($displayer instanceof MultipleFile) {
+                                Arr::set($this->template, $name . '__thumbs', $displayer->thumbs());
+                            } else if ($displayer instanceof DateTime) {
+                                Arr::set($this->template, $name . '__tmp', $value);
+                            }
                             $this->template['__field_info__'][$name] = $displayer->fieldInfo();
                         }
                     }
@@ -478,18 +483,22 @@ class ItemsContent extends FWrapper
             }
         } else {
             //填充模板默认值
-            foreach ($this->cols as $col => $colunm) {
-                if (!($colunm instanceof FRow)) {
-                    continue;
+            if ($this->canAdd) {
+                foreach ($this->cols as $col => $colunm) {
+                    if (!($colunm instanceof FRow)) {
+                        continue;
+                    }
+                    $displayer = $colunm->getDisplayer();
+                    $value = $displayer->lockValue(false)->value('')->beforRender()->renderValue();
+                    Arr::set($this->template, $col, $value);
+                    if ($displayer instanceof DateTime) {
+                        Arr::set($this->template, $col . '__tmp', $value);
+                    } else if ($displayer instanceof MultipleFile) {
+                        Arr::set($this->template, $col . '__thumbs', $displayer->thumbs());
+                    }
+                    $this->template['__field_info__'][$col] = $displayer->fieldInfo();
+                    $this->convertScripts = array_merge($this->convertScripts, $displayer->getConvertScript());
                 }
-                $displayer = $colunm->getDisplayer();
-                $value = $displayer->lockValue(false)->value('')->beforRender()->renderValue();
-                Arr::set($this->template, $col, $value);
-                if ($displayer instanceof DateTime) {
-                    Arr::set($this->template, $col . '__tmp', $value);
-                }
-                $this->template['__field_info__'][$col] = $displayer->fieldInfo();
-                $this->convertScripts = array_merge($this->convertScripts, $displayer->getConvertScript());
             }
         }
 

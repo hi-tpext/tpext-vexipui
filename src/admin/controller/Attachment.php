@@ -124,7 +124,6 @@ class Attachment extends Controller
 
         $table->getToolbar()
             ->btnRefresh()
-            ->btnImport(url('uploadSuccess'), '', ['280px', '235px'], 0, __blang('bilder_upload_file_button'), 'btn-pink', 'mdi-cloud-upload', 'title="' . __blang('bilder_upload_nwe_file') . '"', '')
             ->btnToggleSearch();
 
         foreach ($data as &$d) {
@@ -170,19 +169,5 @@ EOT;
             $table->useCheckbox(false);
             $table->useActionbar(false);
         }
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @title 上传成功
-     * @return mixed
-     */
-    public function uploadSuccess()
-    {
-        $builder = $this->builder(__blang('bilder_file_uploading_succeeded'));
-        $builder->notify(__blang('bilder_file_uploading_succeeded'), 'success'); //提示信息
-        $builder->addOnMountedScript('parent.refreshTable();layerCloseWindow();'); //刷新父页面列表，并关闭弹窗
-        return $builder;
     }
 }
