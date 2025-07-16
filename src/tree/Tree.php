@@ -53,7 +53,7 @@ class Tree extends Widget implements Renderable
             'checked' => 'checked',
         ],
         'root-id' => '',
-        'no-build-tree' => true,//直接传染树形数据，不再构建树结构
+        'no-build-tree' => true, //直接传染树形数据，不再构建树结构
         'block-effect' => true, //是否开启块级效果
         'multiple' => false, //是否多选
     ];
@@ -208,11 +208,11 @@ class Tree extends Widget implements Renderable
 
     protected function treeOptions()
     {
-        $options = $this->getChildren($this->options);
+        $options = $this->getNodeChildren($this->options);
         return $options;
     }
 
-    protected function getChildren($arr)
+    protected function getNodeChildren($arr)
     {
         $options = [];
         foreach ($arr as $data) {
@@ -223,7 +223,7 @@ class Tree extends Widget implements Renderable
                 'selected' => false,
                 'checked' => false,
                 'expanded' => $this->expandAll,
-                'children' => $this->getChildren($data['children'] ?? []),
+                'children' => $this->getNodeChildren($data['children'] ?? []),
                 'checkDisabled' => !$this->multiple,
             ];
         }
