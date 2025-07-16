@@ -671,6 +671,14 @@ class Table extends TWrapper implements Renderable
         {$table}GetData();
     };
 
+    const {$table}Change = (resetPage) => {
+        {$table}Refresh();
+    };
+
+    const {$table}PageSizeChange = (resetPage) => {
+        {$table}Refresh(true);
+    };
+
     const {$table}GetData = () => {
         let params = Object.assign(
             {   __fetch_data__ : 'y',
@@ -943,11 +951,12 @@ EOT;
             "{$table}Data",
             "{$table}MultipleToolbarDisabled",
             "{$table}PagerConfig",
-            "{$table}Refresh",
             "{$table}ActivePage",
             "{$table}PageSize",
             "{$table}Loading",
             //events
+            "{$table}Change",
+            "{$table}PageSizeChange",
             "{$table}CellClick",
             "{$table}CellDblClick",
             "{$table}SelectChange",

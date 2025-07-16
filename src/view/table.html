@@ -54,7 +54,7 @@
         </vxp-table>
         <div class="table-pager">
             <vxp-pagination v-bind="{$id}PagerConfig" v-model:active="{$id}ActivePage" v-model:page-size="{$id}PageSize"
-                @change="{$id}Refresh" @page-size-change="{$id}Refresh"></vxp-pagination>
+                @change="{$id}Change" @page-size-change="{$id}PageSizeChange"></vxp-pagination>
         </div>
     </div>
     {notempty name="addBottom"}

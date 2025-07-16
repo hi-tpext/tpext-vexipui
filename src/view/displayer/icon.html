@@ -26,8 +26,8 @@
             </vxp-table-column>
         </vxp-table>
         <vxp-pagination v-if="{$id}Op.visible && {$id}TableData.length > 0" class="vxp-icon-pager" v-bind="{$id}PagerConfig"
-            v-model:active="{$id}ActivePage" v-model:page-size="{$id}PageSize" @change="{$id}GetData"
-            @page-size-change="{$id}GetData"></vxp-pagination>
+            v-model:active="{$id}ActivePage" v-model:page-size="{$id}PageSize" @change="{$id}Change"
+            @page-size-change="{$id}PageSizeChange"></vxp-pagination>
     </template>
 </vxp-modal>
 {include file="$endtempl" /}

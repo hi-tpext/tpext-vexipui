@@ -67,10 +67,21 @@ class Icon extends Text
         'plugins': ['total', 'size'],
     });
 
-    const {$fieldId}GetData = () => {
+    const {$fieldId}Refresh = (resetPage) => {
+        if(resetPage) {
+            {$fieldId}ActivePage.value = 1;
+        }
         const offset = ({$fieldId}ActivePage.value - 1) * {$fieldId}PageSize.value;
         {$fieldId}TableData.value = {$fieldId}Split({$fieldId}Data.slice(offset, offset + {$fieldId}PageSize.value));
         {$fieldId}PagerConfig.value.total = {$fieldId}Data.length;
+    };
+
+    const {$fieldId}Change = (resetPage) => {
+        {$fieldId}Refresh();
+    };
+
+    const {$fieldId}PageSizeChange = (resetPage) => {
+        {$fieldId}Refresh(true);
     };
 
     const {$fieldId}Split = (list) => {
@@ -110,8 +121,7 @@ class Icon extends Text
         else{
             {$fieldId}Data = {$fieldId}IconList.filter(d => d.name.indexOf(value.trim()) > -1);
         }
-        {$fieldId}ActivePage.value = 1;
-        {$fieldId}GetData();
+        {$fieldId}Refresh(true);
     };
 
     let {$fieldId}SearchChangeTimer = null;
@@ -127,14 +137,13 @@ class Icon extends Text
             else{
                 {$fieldId}Data = {$fieldId}IconList.filter(d => d.name.indexOf(value.trim()) > -1);
             }
-            {$fieldId}ActivePage.value = 1;
-            {$fieldId}GetData();
+            {$fieldId}Refresh(true);
         }, 100);
     };
 
     const {$fieldId}Open = () => {
         if({$fieldId}IconList.length) {
-            {$fieldId}GetData();
+            {$fieldId}Refresh();
             return;
         }
         axios({
@@ -158,7 +167,7 @@ class Icon extends Text
                     {$VModel} = {$fieldId}IconList[0].name;
                 }
             }
-            {$fieldId}GetData();
+            {$fieldId}Refresh();
         })
         .catch(e => {
             console.log(e);
@@ -180,7 +189,8 @@ EOT;
             "{$fieldId}ActivePage",
             "{$fieldId}PageSize",
             "{$fieldId}TableData",
-            "{$fieldId}GetData",
+            "{$fieldId}Change",
+            "{$fieldId}PageSizeChange",
             "{$fieldId}Kwd",
         ]);
     }
