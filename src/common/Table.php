@@ -932,6 +932,7 @@ class Table extends TWrapper implements Renderable
         'key-config' : {
             'id' : '__pk__',
         },
+        'width' : '100%',
         'min-height' : 100,
         'row-style' : 'min-height:41px',
         'single-sorter' : true, //设置后将限制表格只能有一列开启排序,
