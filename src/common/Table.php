@@ -1180,8 +1180,12 @@ EOT;
                             if ($sDisplayer instanceof MultipleFile) {
                                 Arr::set($this->dataList[$key], $sDisplayer->getName() . '__thumbs', $sDisplayer->thumbs());
                             }
+
+                            $sDisplayer->fill([]);
                         }
                     }
+
+                    $displayer->fill([]);
                 }
 
                 if ($this->useActionbar) {
