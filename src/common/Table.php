@@ -77,7 +77,7 @@ class Table extends TWrapper implements Renderable
     protected $sortable = ['id'];
     protected $sortOrder = '';
     protected $partial = false;
-    protected $delay = true;//延迟读取数据，调用fill()填充数据后取消延迟
+    protected $delay = true; //延迟读取数据，调用fill()填充数据后取消延迟
     protected $convertScripts = [];
 
     /**
@@ -631,7 +631,7 @@ class Table extends TWrapper implements Renderable
         sort($this->pagesizeDropdown);
         $tableColumns = json_encode($this->tableColumns, JSON_UNESCAPED_UNICODE);
         $pagesizeDropdown = json_encode($this->pagesizeDropdown, JSON_UNESCAPED_UNICODE);
-        $initData = json_encode($this->dataList, JSON_UNESCAPED_UNICODE);
+        $initData = json_encode(array_values($this->dataList), JSON_UNESCAPED_UNICODE);
         $useChooseColumns = $this->getToolbar()->getChooseColumns() === false ? '[]'
             : json_encode($this->getToolbar()->getChooseColumns(), JSON_UNESCAPED_UNICODE);
         $useCheckbox = $this->useCheckbox && $this->useToolbar ? 'true' : 'false';
