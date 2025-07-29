@@ -581,7 +581,7 @@ EOT;
         $table = $this->id;
         $VModel = $this->getVModel();
         $tableColumns = json_encode($this->tableColumns, JSON_UNESCAPED_UNICODE);
-        $initData = json_encode($this->dataList, JSON_UNESCAPED_UNICODE);
+        $initData = json_encode(array_values($this->dataList), JSON_UNESCAPED_UNICODE);
         $template = json_encode($this->template, JSON_UNESCAPED_UNICODE);
 
         $this->convertScripts = array_filter($this->convertScripts, 'strlen');

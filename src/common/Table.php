@@ -1312,7 +1312,7 @@ EOT;
             if (ob_get_level()) {
                 ob_clean();
             }
-            return json(['list' => $this->dataList, 'total' => $this->dataTotal, 'pageSize' => $this->pageSize]);
+            return json(['list' => array_values($this->dataList), 'total' => $this->dataTotal, 'pageSize' => $this->pageSize]);
         }
 
         $viewshow = new View($this->getViewTemplate());
