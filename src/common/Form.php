@@ -873,8 +873,11 @@ class Form extends FWrapper implements Renderable
 
         $(document).bind('keyup', '#{$form} form', function(event) {
             if (event.keyCode === 13) {
-                if($('#{$form} form textarea').length) {
-                    return event.target.tagName.toLowerCase() == "textarea";
+                if(document.activeElement.tagName.toLowerCase()== "textarea") {
+                    return false;
+                }
+                if($('form').size() > 1) {
+                    return false;
                 }
                 return {$form}Submit();
             }
