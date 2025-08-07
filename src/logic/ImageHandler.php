@@ -77,6 +77,8 @@ class ImageHandler implements IImage
             }
         }
 
+        $attachment['url'] = str_replace(App::getPublicPath(), '', $attachment['url']);
+
         //修改了图片，更新文件信息
         $attachment['size'] = filesize($imgPath) / (1024 ** 2);
         $attachment['sha1'] = hash_file('sha1', $imgPath);
@@ -116,7 +118,7 @@ class ImageHandler implements IImage
 
         unset($imageInstance);
 
-        return ltrim($imgPath, '.');
+        return $imgPath;
     }
 
     /**
@@ -172,7 +174,7 @@ class ImageHandler implements IImage
 
         unset($imageInstance);
 
-        return ltrim($imgPath, '.');
+        return $imgPath;
     }
 
     /**
@@ -195,7 +197,7 @@ class ImageHandler implements IImage
 
         unset($imageInstance);
 
-        return ltrim($imgPath, '.');
+        return $imgPath;
     }
 
     /**
@@ -224,7 +226,7 @@ class ImageHandler implements IImage
 
         unset($imageInstance);
 
-        return ltrim($imgPath, '.');
+        return $imgPath;
     }
 
     /**
@@ -311,12 +313,7 @@ class ImageHandler implements IImage
             return $path;
         }
 
-        //本站相对路径
-        if (substr($path, 0, 1) != '.') {
-            return '.' . $path;
-        }
-
-        return $path;
+        return App::getPublicPath() . ltrim($path, '.');
     }
 
     /**
