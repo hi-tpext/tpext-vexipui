@@ -11,6 +11,8 @@ class Tree extends Field
 
     protected $multiple = true;
 
+    protected $valueType = 'array';
+
     protected $maxHeight = 400;
 
     protected $expandAll = true;
