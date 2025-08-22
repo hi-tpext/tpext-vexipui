@@ -41,6 +41,8 @@ class Search extends SWrapper implements Renderable
     protected $open = true;
     protected $tableId = '';
     protected $formData = [];
+    protected $convertScripts = [];
+
     /**
      * Undocumented variable
      *
@@ -438,6 +440,20 @@ class Search extends SWrapper implements Renderable
         return $this;
     }
 
+    /**
+     * Undocumented function
+     * 
+     * @param string|array $script
+     * @return void
+     */
+    public function addConvertScript($script)
+    {
+        if (!is_array($script)) {
+            $script = [$script];
+        }
+        $this->convertScripts = array_merge($this->convertScripts, $script);
+    }
+
     protected function eventScript()
     {
         $form = $this->id;
@@ -495,6 +511,12 @@ EOT;
         $open = $this->open ? 'true' : 'false';
         $formData = json_encode($this->formData, JSON_UNESCAPED_UNICODE);
 
+        $convertScripts = '';
+        $this->convertScripts = array_filter($this->convertScripts, 'strlen');
+        if (count($this->convertScripts)) {
+            $convertScripts = implode("\n\t\t\t", $this->convertScripts);
+        }
+
         $script = <<<EOT
 
     const {$form}Ref = ref(null);
@@ -505,9 +527,16 @@ EOT;
         {$table}Refresh(true);
     };
 
+    const {$form}Convert = ({$form}Data) => {
+        {$convertScripts}
+        return {$form}Data;
+    };
+
     const {$form}Reset = () => {
         {$form}Ref.value.reset();
-        {$table}Refresh(true);
+        setTimeout(() => {
+            {$table}Refresh(true);
+        }, 100);
     };
 
     const {$table}ToggleSearch = () => {

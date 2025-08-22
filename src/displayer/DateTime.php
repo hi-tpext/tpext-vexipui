@@ -119,11 +119,12 @@ class DateTime extends Field
             (newValue, oldValue) => {
                 if(!newValue) {
                     {$VModel} = null;
+                    console.log({$VModel});
                 }
             }
         );
 
 EOT;
-        $this->convertScript[] = $script;
+        $this->onMountedScript[] = $script;
     }
 }

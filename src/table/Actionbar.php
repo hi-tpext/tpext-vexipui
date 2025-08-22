@@ -2,10 +2,12 @@
 
 namespace tpext\builder\table;
 
+use tpext\think\View;
+use tpext\builder\toolbar\Html;
+use tpext\builder\common\Module;
+use tpext\builder\common\Builder;
 use tpext\builder\common\Toolbar;
 use tpext\builder\toolbar\ActionBtn;
-use tpext\builder\toolbar\Html;
-use tpext\builder\common\Builder;
 
 class Actionbar extends Toolbar
 {
@@ -130,22 +132,24 @@ class Actionbar extends Toolbar
             $elm->tableId($this->tableId);
 
             $label = $elm->getLabel();
-            $icon = $elm->getInon();
-            $labelWidth = mb_strlen($label) * 12; //字体大小12px
-
-            if ($icon) {
-                $labelWidth += 12; //icon字体大小12px
-            }
-
-            $labelWidth = $labelWidth > 24 ? $labelWidth + (5 + 1) * 2 : 24; //大于24时，按钮左右padding各5px，border左右各1px
-
-            $width += $labelWidth;
-
-            if ($elm instanceof Html && stristr($label, '<br')) {
-                $width += 4 * ($count - 1) + 6 * 2; //非首元素时间隔前一个4px,操作列 padding左右各6px
+            if ($elm instanceof Html && (stristr($label, '<div') || stristr($label, '<br'))) {
+                $width += 4 * ($count - 1) + 4 * 2; //非首元素时间隔前一个4px,操作列 padding左右各4px
                 $btnGropps[] = $width;
                 $width = 0;
                 $count = 0;
+            } else {
+                if (!$elm->isHidden()) {
+                    $icon = $elm->getInon();
+                    $labelWidth = mb_strlen($label) * 12; //字体大小12px
+
+                    if ($icon) {
+                        $labelWidth += 12; //icon字体大小12px
+                    }
+
+                    $labelWidth = $labelWidth > 12 ? $labelWidth + (8 + 1) * 2 : 30; //大于24时，按钮左右padding各8px，border左右各1px
+
+                    $width += $labelWidth;
+                }
             }
             if (!($elm instanceof ActionBtn)) {
                 continue;
@@ -201,11 +205,9 @@ class Actionbar extends Toolbar
             $this->actionConfig[$elm->getId()] = $config;
         }
 
-        if (count($btnGropps)) {
-            $width = max($btnGropps);
-        } else {
-            $width += 4 * ($count - 1) + 6 * 2; //非首元素时间隔前一个4px,操作列 padding左右各6px
-        }
+        $width += 4 * ($count - 1) + 4 * 2;
+        $btnGropps[] = $width;
+        $width = max($btnGropps);
 
         $this->actionWidth = $width;
 
@@ -446,7 +448,22 @@ class Actionbar extends Toolbar
      */
     public function br()
     {
-        parent::html('<br />');
+        parent::html('</div><div class="btn-row">');
         return $this;
+    }
+
+    public function render()
+    {
+        $template = Module::getInstance()->getViewsPath() . 'table' . DIRECTORY_SEPARATOR . 'actionbar.html';
+
+        $viewshow = new View($template);
+
+        $vars = [
+            'elms' => $this->elms,
+            'class' => $this->class,
+            'attr' => $this->getAttrWithStyle(),
+        ];
+
+        return $viewshow->assign($vars)->getContent();
     }
 }

@@ -66,7 +66,7 @@ class Bar implements Renderable
     {
         $this->type = str_replace('btn-', '', $val);
         if ($this->type == 'danger') {
-            $this->type  = 'error';
+            $this->type = 'error';
         }
         if (!in_array($this->type, ['primary', 'info', 'success', 'warning', 'error'])) {
             $this->addClass('vxp-button--' . $this->type);
@@ -187,6 +187,11 @@ class Bar implements Renderable
         return $this;
     }
 
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
     public function getHref()
     {
         return empty($this->__href__) ? $this->href : $this->__href__;
@@ -254,16 +259,6 @@ class Bar implements Renderable
     public function isPullRight()
     {
         return $this->pullRight;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return array
-     */
-    public function getScript()
-    {
-        return $this->script;
     }
 
     /**

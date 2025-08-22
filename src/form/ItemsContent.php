@@ -353,11 +353,34 @@ class ItemsContent extends FWrapper
                 'wrapperStyle' => $colunm->getStyle(),
             ]);
 
-            $width = $colunm->getStyleByName('width') ?: '0';
+            $width = $colunm->getStyleByName('width') ?: ($displayer->getStyleByName('width') ?: '0');
             if (strstr($width, '%')) {
-                $width = 0; //暂不支持百分比
+                //已支持百分比
             } else {
-                $width = (int) preg_replace('/\D/', '', $width);
+                $width = (int) preg_replace('/\D/', '', $width) ?: ($col == $this->pk ? 60 : null);
+                if (!is_null($width) && $displayer->isInput()) {
+                    $width += 16;
+                }
+            }
+
+            $minWidth = $colunm->getStyleByName('min-width') ?: ($displayer->getStyleByName('min-width') ?: '0');
+            if (strstr($minWidth, '%')) {
+                $minWidth = 60; //暂不支持百分比
+            } else {
+                $minWidth = (int) preg_replace('/\D/', '', $minWidth) ?: 60;
+                if ($displayer->isInput()) {
+                    $minWidth += 16;
+                }
+            }
+
+            $maxWidth = $colunm->getStyleByName('max-width') ?: ($displayer->getStyleByName('max-width') ?: '0');
+            if (strstr($maxWidth, '%')) {
+                $maxWidth = null; //暂不支持百分比
+            } else {
+                $maxWidth = (int) preg_replace('/\D/', '', $maxWidth) ?: null;
+                if (!is_null($maxWidth) && $displayer->isInput()) {
+                    $maxWidth += 16;
+                }
             }
 
             $this->tableColumns[$col] = [
@@ -368,8 +391,9 @@ class ItemsContent extends FWrapper
                 'id-key' => $col,
                 'sorter' => !$this->hasAction(),
                 'width' => $width,
-                // 'min-width' => $colunm->getStyleByName('min-width') ?: '90',
-                // 'max-width' => $colunm->getStyleByName('max-width') ?: ($displayer->getStyleByName('max-width') ?: '100%'),//暂不支持
+                'min-width' => $col == $this->pk ? 30 : $minWidth,
+                'max-width' => $maxWidth,
+                'ellipsis' => !$displayer->isInput(),
                 'meta' => $params, //在表格事件中可获取到该参数
             ];
 

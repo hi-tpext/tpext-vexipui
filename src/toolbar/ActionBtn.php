@@ -318,6 +318,7 @@ class ActionBtn extends Bar
         'size' : 'small',
         'simple' : true,
         'type' : '{$this->type}',
+        'class' : '{$this->class}',
     });
 
 EOT;
@@ -358,6 +359,7 @@ EOT;
         'size' : 'small',
         'simple' : true,
         'type' : '{$this->type}',
+        'class' : '{$this->class}',
     });
 
 EOT;

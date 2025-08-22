@@ -8,15 +8,15 @@
 <vxp-modal v-bind="{$id}Op.ModalOp" v-model:active="{$id}Op.visible" @show="{$id}Open">
     <template #title>
         <div class="vxp-icon-search">
-            <vxp-input size="small" :clearable="true" v-model:value="{$id}Kwd" placeholder="Icon search"
-                @enter="{$id}Search" @clear="{$id}Search" @suffix-click="{$id}Search" @input="{$id}SearchInput"
+            <vxp-input :clearable="true" v-model:value="{$id}Kwd" placeholder="Icon search" @enter="{$id}Search"
+                @clear="{$id}Search" @suffix-click="{$id}Search" @input="{$id}SearchInput"
                 :suffix="{$id}Icon"></vxp-input>
         </div>
     </template>
     <template #default>
         <vxp-table v-if="{$id}Op.visible && {$id}TableData.length > 0" class="vxp-icon-table" v-bind="{$id}Op.gridOp"
-            :data="{$id}TableData" @cell-click="{$id}CellClick">
-            <vxp-table-column v-for="col in 16" :text-align="'center'" :width="32" id-key="name">
+            :data="{$id}TableData" @cell-click="{$id}CellClick" ref="{$id}Ref">
+            <vxp-table-column v-for="col in 16" :text-align="'center'" :width="32" :min-width="32" id-key="name">
                 <template #head="{row}">
                     <!--none-->
                 </template>
@@ -25,9 +25,9 @@
                 </template>
             </vxp-table-column>
         </vxp-table>
-        <vxp-pagination v-if="{$id}Op.visible && {$id}TableData.length > 0" class="vxp-icon-pager" v-bind="{$id}PagerConfig"
-            v-model:active="{$id}ActivePage" v-model:page-size="{$id}PageSize" @change="{$id}Change"
-            @page-size-change="{$id}PageSizeChange"></vxp-pagination>
+        <vxp-pagination v-if="{$id}Op.visible && {$id}TableData.length > 0" class="vxp-icon-pager"
+            v-bind="{$id}PagerConfig" v-model:active="{$id}ActivePage" v-model:page-size="{$id}PageSize"
+            @change="{$id}Change" @page-size-change="{$id}PageSizeChange"></vxp-pagination>
     </template>
 </vxp-modal>
 {include file="$endtempl" /}

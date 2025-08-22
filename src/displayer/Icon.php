@@ -35,6 +35,7 @@ class Icon extends Text
         'gridOp' => [
             'show-header' => false,
             'height' => 260,
+            'width' => 16 * 32,
             'border' => true,
             'highlight' => false,
             'virtual' => true,
@@ -57,6 +58,7 @@ class Icon extends Text
     const {$fieldId}Icon = ref(VexipIcon.MagnifyingGlass);
     const {$fieldId}ActivePage = ref(1);
     const {$fieldId}PageSize = ref(112);
+    const {$fieldId}Ref = ref(null);
     const {$fieldId}TableData = ref([]);
     const {$fieldId}Kwd = ref('');
 
@@ -102,6 +104,7 @@ class Icon extends Text
     const {$fieldId}OpenIconSelector = (tRow) => {
         {$fieldId}Row = tRow;
         {$fieldId}Op.value.visible = !{$fieldId}Op.value.visible;
+        {$fieldId}Ref.value.refresh();
     };
 
     const {$fieldId}CellClick = ({row, columnIndex}) => {
@@ -188,6 +191,7 @@ EOT;
             "{$fieldId}Icon",
             "{$fieldId}ActivePage",
             "{$fieldId}PageSize",
+            "{$fieldId}Ref",
             "{$fieldId}TableData",
             "{$fieldId}Change",
             "{$fieldId}PageSizeChange",

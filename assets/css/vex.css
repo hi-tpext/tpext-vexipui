@@ -8,7 +8,7 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
- html {
+html {
   line-height: 1.15; /* 1 */
   -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -677,6 +677,7 @@ body {
 
 .vxp-form-row .vxp-form__label.full-label {
   min-height: 22px;
+  margin-bottom: 3px;
 }
 
 .vxp-form-row .vxp-form__item {
@@ -736,12 +737,84 @@ body {
   display: none;
 }
 
+.vxp-form-row .vxp-checkbox-group--border .vxp-checkbox {
+  padding: 6px 12px;
+  --vxp-checkbox-series-h-span: 5px;
+}
+
+.vxp-form-row .vxp-radio--button {
+  --vxp-radio-series-span: 5px;
+  padding: 0 12px;
+}
+
+.vxp-form-row .vxp-radio--checked.vxp-radio--button {
+  background: inherit;
+  border-color: var(--vxp-radio-b-color-checked);
+}
+
+.vxp-form-row .vxp-radio--checked.vxp-radio--button .vxp-radio__label {
+  color: var(--vxp-radio-b-color-checked);
+}
+
+.vxp-form-row .vxp-radio--checked.vxp-radio--button::before,
+.vxp-form-row .vxp-checkbox-group--border .vxp-checkbox--checked::before {
+  display: block;
+  right: 1px;
+  top: -1px;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  content: "";
+  border: 0.5px solid #fff;
+  border-top-width: 0.5px;
+  border-top-style: solid;
+  border-top-color: rgb(255, 255, 255);
+  border-right-width: 0.5px;
+  border-bottom-width: 0.5px;
+  border-left-width: 0.5px;
+  border-left-style: solid;
+  border-left-color: rgb(255, 255, 255);
+  border-width: 0 1px 1px 0;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-left: 0;
+  border-top: 0;
+  height: 8px;
+  width: 4px;
+  position: absolute;
+  margin-left: 4.5px;
+  margin-top: 1px;
+  transition: transform 0.15s ease-in 50ms, -webkit-transform 0.15s ease-in 50ms;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+  z-index: 3;
+  -webkit-transform: rotate(45deg) scale(0.7);
+  transform: rotate(45deg) scale(0.7);
+}
+
+.vxp-form-row .vxp-radio--checked::after,
+.vxp-form-row .vxp-checkbox-group--border .vxp-checkbox--checked::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: -1px;
+  top: -1px;
+  border-bottom: 20px solid transparent;
+  border-right: 20px solid var(--vxp-color-primary-base);
+  border-top-right-radius: var(--vxp-radius-base);
+  display: block;
+}
+
+.vxp-form-row .vxp-radio--button {
+  height: 28px;
+}
+
 .vxp-button.icon-selector {
   margin-right: 5px;
   padding: 0;
   min-width: 42px;
   margin-top: 4px;
-  margin-top: 4px;
+  --vxp-button-height: 28px;
 }
 
 .vxp-icon-table .vxp-table__head-wrapper {
@@ -757,9 +830,13 @@ body {
 }
 
 .table-column-buttons .vxp-button {
-  --vxp-button-h-padding: 5px;
+  --vxp-button-h-padding: 8px;
   --vxp-button-series-span: 4px;
   font-size: 12px;
+}
+
+.table-column-buttons .btn-row {
+  padding: 2px 0;
 }
 
 .vxp-map {
@@ -811,7 +888,8 @@ body {
 }
 
 .form-field-readonly .vxp-form__control {
-  opacity: 0.5;
+  opacity: 0.8;
+  cursor: not-allowed;
 }
 
 .form-field-readonly .vxp-form__control > * {
@@ -857,7 +935,7 @@ body {
 .vxp-table .column-field-wrapper.disabled,
 .vxp-table .column-field-wrapper.readonly {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
 .vxp-table .column-field-wrapper.disabled > *,
@@ -865,10 +943,12 @@ body {
   pointer-events: none;
 }
 
-.table-wrapper .vxp-table__content {
+.table-wrapper .vxp-table__body .vxp-table__content {
   word-break: normal;
   white-space: inherit;
-  min-height: 41px;
+  min-height: 40px;
+  --vxp-table-cell-v-padding: 4px;
+  --vxp-table-cell-h-padding: 4px;
 }
 
 .table-wrapper .vxp-table__content .field-show,
@@ -908,6 +988,16 @@ body {
 .toolbar-wrapper {
   width: 100%;
   padding: 2px 2px;
+}
+
+.toolbar-wrapper .vxp-button--small {
+  --vxp-button-height: 26px;
+  --vxp-button-series-span: 4px;
+  --vxp-button-h-padding: 6px;
+}
+
+.vxp-icon-search .vxp-button--small {
+  --vxp-button-height: 26px;
 }
 
 .table-wrapper {
@@ -1249,116 +1339,119 @@ body {
 }
 
 .btn-disabled {
-  opacity: 0.5;
+  opacity: 0.8;
   pointer-events: none;
+  cursor: not-allowed;
 }
 
-.the-field.default {
+span.the-field {
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
+}
+
+.default span.the-field,
+span.the-field.default {
   color: #8b95a5;
+  border: 1px solid #8b95a530;
+  padding: 3px 7px;
+  background-color: #8b95a510;
 }
 
-.the-field.primary {
-  color: #33cabb;
-}
-
-.the-field.success {
-  color: #72b754;
-}
-
-.the-field.info {
-  color: #48b0f7;
-}
-
-.the-field.warning {
-  color: #faa64b;
-}
-
-.the-field.danger {
-  color: #f96868;
-}
-
-.the-field.dark {
-  color: #465161;
-}
-
-.the-field.secondary {
-  color: #e4e7ea;
-}
-
-.the-field.purple {
-  color: #926dde;
-}
-
-.the-field.pink {
-  color: #f96197;
-}
-
-.the-field.cyan {
-  color: #57c7d4;
-}
-
-.the-field.yellow {
-  color: #fcc525;
-}
-
-.field-required {
-  color: red;
-  margin-right: 2px;
-}
-
-.default span.the-field {
-  color: #8b95a5;
-}
-
-.primary span.the-field {
+.primary span.the-field,
+span.the-field.primary {
   color: #647bf8;
+  border: 1px solid #647bf830;
+  padding: 3px 7px;
+  background-color: #647bf810;
 }
 
-.success span.the-field {
+.success span.the-field,
+span.the-field.success {
   color: #54b77a;
+  border: 1px solid #54b77a30;
+  padding: 3px 7px;
+  background-color: #54b77a10;
 }
 
-.info span.the-field {
-  color: #48b0f7;
+.info span.the-field,
+span.the-field.info {
+  color: #2a96ee;
+  border: 1px solid #2a96ee30;
+  padding: 3px 7px;
+  background-color: #2a96ee10;
 }
 
-.warning span.the-field {
+.warning span.the-field,
+span.the-field.warning {
   color: #faa64b;
+  border: 1px solid #faa64b30;
+  padding: 3px 7px;
+  background-color: #faa64b10;
 }
 
-.danger span.the-field {
+.danger span.the-field,
+span.the-field.danger {
   color: #f96868;
+  border: 1px solid #f9686830;
+  padding: 3px 7px;
+  background-color: #f9686810;
 }
 
-.dark span.the-field {
+.dark span.the-field,
+span.the-field.dark {
   color: #465161;
+  border: 1px solid #46516130;
+  padding: 3px 7px;
+  background-color: #46516110;
 }
 
-.secondary span.the-field {
+.secondary span.the-field,
+span.the-field.secondary {
   color: #e4e7ea;
+  border: 1px solid #e4e7ea30;
+  padding: 3px 7px;
+  background-color: #e4e7ea10;
 }
 
-.purple span.the-field {
+.purple span.the-field,
+span.the-field.purple {
   color: #926dde;
+  border: 1px solid #926dde30;
+  padding: 3px 7px;
+  background-color: #926dde10;
 }
 
-.pink span.the-field {
+.pink span.the-field,
+span.the-field.pink {
   color: #f96197;
+  border: 1px solid #f9619730;
+  padding: 3px 7px;
+  background-color: #f9619710;
 }
 
-.cyan span.the-field {
+.cyan span.the-field,
+span.the-field.cyan {
   color: #57c7d4;
+  border: 1px solid #57c7d430;
+  padding: 3px 7px;
+  background-color: #f9619710;
 }
 
-.yellow span.the-field {
+.yellow span.the-field,
+span.the-field.yellow {
   color: #fcc525;
+  border: 1px solid #fcc52530;
+  padding: 3px 7px;
+  background-color: #fcc52510;
 }
 
 .label {
-  padding: 0.3em;
-  border-radius: 2px;
+  padding: 3px 7px;
+  border-radius: 4px;
   font-weight: 300;
   color: #fff;
+  font-size: 12px;
 }
 .label-default {
   background-color: #f5f6f7;
@@ -1371,7 +1464,7 @@ body {
   background-color: #54b77a;
 }
 .label-info {
-  background-color: #48b0f7;
+  background-color: #2a96ee;
 }
 .label-warning {
   background-color: #faa64b;
@@ -1403,37 +1496,37 @@ body {
 }
 
 /**按钮样式扩展**/
-.vxp-button.vxp-button--dark.is-plain {
+.vxp-button.vxp-button--dark.vxp-button--simple {
   color: #454a50;
   background-color: #ebeef3;
   border-color: #8a9099;
 }
 
-.vxp-button.vxp-button--purple.is-plain {
+.vxp-button.vxp-button--purple.vxp-button--simple {
   color: #926dde;
   background-color: #ece5f8;
   border-color: #cdb8f7;
 }
 
-.vxp-button.vxp-button--pink.is-plain {
+.vxp-button.vxp-button--pink.vxp-button--simple {
   color: #f96197;
   background-color: #f7e6ec;
   border-color: #d6b6c1;
 }
 
-.vxp-button.vxp-button--cyan.is-plain {
+.vxp-button.vxp-button--cyan.vxp-button--simple {
   color: #57c7d4;
   background-color: #d5f5f8;
   border-color: #b8d2d4;
 }
 
-.vxp-button.vxp-button--yellow.is-plain {
+.vxp-button.vxp-button--yellow.vxp-button--simple {
   color: #fcc525;
   background-color: #f5eed8;
   border-color: #ddd4bb;
 }
 
-.vxp-button.vxp-button--brown.is-plain {
+.vxp-button.vxp-button--brown.vxp-button--simple {
   color: #8d6658;
   background-color: #eed7cf;
   border-color: #c9bdb9;
@@ -1442,6 +1535,11 @@ body {
 .displayer-formerror {
   min-height: 40px;
   margin-top: 12px;
+}
+
+.field-required {
+  color: red;
+  margin-right: 2px;
 }
 
 .column-field-wrapper.vxp-input--error > div {

@@ -12,9 +12,9 @@
     {/notempty}
     <div class="table-wrapper">
         <vxp-spin :active="{$id}Loading" :inner="true"></vxp-spin>
-        <vxp-table class="{$class}" ref="{$id}Ref" :data="{$id}Data" v-bind="{$id}Op"
-            @cell-click="{$id}CellClick" @cell-dblclick="{$id}CellDblClick" @row-check="{$id}SelectChange"
-            @row-check-all="{$id}SelectAll" @row-enter="{$id}RowEnter" @row-sort="{$id}RowSort" {$attr|raw}>
+        <vxp-table class="{$class}" ref="{$id}Ref" :data="{$id}Data" v-bind="{$id}Op" @cell-click="{$id}CellClick"
+            @cell-dblclick="{$id}CellDblClick" @row-check="{$id}SelectChange" @row-check-all="{$id}SelectAll"
+            @row-enter="{$id}RowEnter" @row-sort="{$id}RowSort" {$attr|raw}>
             <template #empty>
                 <div v-if="!{$id}Loading">
                     {$emptyText|raw}
@@ -24,7 +24,7 @@
                 </div>
             </template>
             {if condition="$useCheckbox"}
-            <vxp-table-column :width="30" type="selection" :order="0"></vxp-table-column>
+            <vxp-table-column :width="30" :min-width="30" type="selection" :order="0"></vxp-table-column>
             {/if}
             {foreach name="list" id="displayer" key="co" index="i"}
             <vxp-table-column v-bind="{$id}Columns['{$co}']" :class="['current']"
@@ -43,7 +43,7 @@
             {/foreach}
             {if condition="$useActionbar"}
             <vxp-table-column name="{$actionRowText}" text-align="center" id-key="__action__" :order="99"
-                :width="{$actionRowWidth}">
+                :width="{$actionRowWidth}" :min-width="46">
                 <template #default="{row, rowIndex, column, columnIndex}">
                     <div v-if="row && row.__action__!==undefined" class="table-column-buttons">
                         {:$actionbar->render()}

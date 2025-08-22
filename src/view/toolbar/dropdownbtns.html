@@ -5,7 +5,7 @@
     <template #drop>
         {if condition="$checkbox"}
         <vxp-dropdown-list>
-            <vxp-checkbox-group class="drop-down-checkbox" :vertical="true" v-model:value="{$id}Checked"
+            <vxp-checkbox-group class="drop-down-checkbox" size="small" :vertical="true" v-model:value="{$id}Checked"
                 @change="{$id}Change">
                 {volist name="items" id="item"}
                 <vxp-checkbox value="{$item.key}">{$item.label|raw}</vxp-checkbox>

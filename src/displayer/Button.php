@@ -56,8 +56,8 @@ class Button extends Field
             $this->jsOptions['type']  = 'error';
         }
         if (!in_array($this->jsOptions['type'], ['primary', 'info', 'success', 'warning', 'error'])) {
-            $this->addClass('vxp-button--' . $this->jsOptions['type']);
             $this->jsOptions['type'] = 'default';
+            $this->jsOptions['class'] = 'vxp-button--' . $this->jsOptions['type'];
         }
         return $this;
     }

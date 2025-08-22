@@ -24,6 +24,7 @@ class TColumn extends TWrapper implements Renderable
         'hidden' => false,
         'width' => 0,
         'min-width' => 0,
+        'max-width' => null,
         'align' => '',
         'header-align' => '',
     ];
@@ -138,12 +139,24 @@ class TColumn extends TWrapper implements Renderable
     /**
      * Undocumented function
      *
-     * @param string|int $val 60/60px/10%
+     * @param string|int $val 60/60px
      * @return $this
      */
     public function minWidth($val)
     {
         $this->colAttr['min-width'] = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param string|int $val 60/60px
+     * @return $this
+     */
+    public function maxWidth($val)
+    {
+        $this->colAttr['max-width'] = $val;
         return $this;
     }
 

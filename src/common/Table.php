@@ -696,6 +696,8 @@ class Table extends TWrapper implements Renderable
                 return acc;
             }, {});
 
+        params = {$search}Convert(params);
+
         axios({
             method: 'get',
             url: location.href,
@@ -712,6 +714,7 @@ class Table extends TWrapper implements Renderable
             {$table}ActiveRow.value = {__pk__ : null};
             {$table}Data.value = data.list;
             {$table}PagerConfig.value.total = data.total;
+            // {$table}Ref.value.refresh();
         }).catch(e => {
             {$table}Loading.value = false;
             console.log(e);
@@ -730,6 +733,8 @@ class Table extends TWrapper implements Renderable
             },
             {$table}Sort ? { __sort__ : {$table}Sort } : null,
         );
+
+        params = {$search}Convert(params);
 
         axios({
             method: 'get',
@@ -1115,9 +1120,32 @@ EOT;
 
                 $width = $colAttr['width'] ?: ($colunm->getStyleByName('width') ?: ($displayer->getStyleByName('width') ?: '0'));
                 if (strstr($width, '%')) {
-                    $width = 0; //暂不支持百分比
+                    //已支持百分比
                 } else {
-                    $width = (int) preg_replace('/\D/', '', $width);
+                    $width = (int) preg_replace('/\D/', '', $width) ?: ($col == $this->pk ? 60 : null);
+                    if (!is_null($width) && $displayer->isInput()) {
+                        $width += 16;
+                    }
+                }
+
+                $minWidth = $colAttr['min-width'] ?: ($colunm->getStyleByName('min-width') ?: ($displayer->getStyleByName('min-width') ?: '0'));
+                if (strstr($minWidth, '%')) {
+                    $minWidth = 60; //暂不支持百分比
+                } else {
+                    $minWidth = (int) preg_replace('/\D/', '', $minWidth) ?: 60;
+                    if ($displayer->isInput()) {
+                        $minWidth += 16;
+                    }
+                }
+
+                $maxWidth = $colAttr['max-width'] ?: ($colunm->getStyleByName('max-width') ?: ($displayer->getStyleByName('max-width') ?: '0'));
+                if (strstr($maxWidth, '%')) {
+                    $maxWidth = null; //暂不支持百分比
+                } else {
+                    $maxWidth = (int) preg_replace('/\D/', '', $maxWidth) ?: null;
+                    if (!is_null($maxWidth) && $displayer->isInput()) {
+                        $maxWidth += 16;
+                    }
                 }
 
                 $this->tableColumns[$col] = [
@@ -1128,8 +1156,8 @@ EOT;
                     'id-key' => $col,
                     'sorter' => $colAttr['sortable'] || $col == $sortKey || in_array($col, $this->sortable),
                     'width' => $width,
-                    // 'min-width' => $colAttr['min-width'] ?: ($colunm->getStyleByName('min-width') ?: ($displayer->getStyleByName('min-width') ?: '90')),
-                    // 'max-width' => $colunm->getStyleByName('max-width') ?: ($displayer->getStyleByName('max-width') ?: '100%'),//暂不支持
+                    'min-width' => $col == $this->pk ? 30 : $minWidth,
+                    'max-width' => $maxWidth,
                     // 'visible' => $colAttr['hidden'] ? false : ($useChooseColumns && ($useChooseColumns[0] == '*' || in_array($col, $useChooseColumns))),
                     'meta' => $params, //在表格事件中可获取到该参数
                 ];

@@ -109,7 +109,7 @@ class LinkBtn extends Bar
         'size' : 'small',
         'simple' : true,
         'type' : '{$this->type}',
-        'class' : { 'btn-disabled' : {$table}MultipleToolbarDisabled}
+        'class' : ['{$this->class}', { 'btn-disabled' : {$table}MultipleToolbarDisabled}]
         // 'disabled' : {$table}MultipleToolbarDisabled,
     });
 
@@ -164,6 +164,7 @@ EOT;
         'size' : 'small',
         'simple' : true,
         'type' : '{$this->type}',
+        'class' : '{$this->class}',
     });
 
 EOT;
