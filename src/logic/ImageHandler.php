@@ -10,11 +10,41 @@ use tpext\think\App;
 class ImageHandler implements IImage
 {
     /**
-     * Undocumented variable
+     * Intervention/Image 版本
+     * 
+     * @var int
+     */
+    protected $version;
+
+    /**
+     * 驱动实例
      *
-     * @var \Intervention\Image\AbstractDriver
+     * @var \Intervention\Image\AbstractDriver|\Intervention\Image\Drivers\AbstractDriver
      */
     protected $driver;
+
+    /**
+     * 构造函数，检测 Intervention/Image 版本
+     */
+    public function __construct()
+    {
+        $this->version = $this->detectVersion();
+    }
+
+    /**
+     * 检测 Intervention/Image 版本
+     * 
+     * @return int 2 或 3
+     */
+    protected function detectVersion()
+    {
+        // 检查 v3 特有的类是否存在
+        if (class_exists('\\Intervention\\Image\\Drivers\\AbstractDriver')) {
+            return 3;
+        }
+
+        return 2;
+    }
 
     /**
      * Undocumented function
@@ -106,15 +136,27 @@ class ImageHandler implements IImage
             return $imgPath;
         }
 
-        $imageInstance->resize($args['width'] ?: null, $args['height'] ?: null, function ($constraint) use ($args) {
-            if (!isset($args['aspectRatio']) || $args['aspectRatio'] == 1 || $args['aspectRatio'] == true) {
-                $constraint->aspectRatio();
-            }
+        if ($this->version == 3) {
+            // v3 版本的 resize 操作
 
-            if (!isset($args['upsize']) || $args['upsize'] == 1 || $args['upsize'] == true) {
-                $constraint->upsize();
+            // 处理宽高比
+            if (!isset($args['aspectRatio']) || $args['aspectRatio'] == 1 || $args['aspectRatio'] == true) {
+                $imageInstance->scale($args['width'] ?: null, $args['height'] ?: null)->save($args['to_path'] ?? null);
+            } else {
+                $imageInstance->resize($args['width'] ?: null, $args['height'] ?: null)->save($args['to_path'] ?? null);
             }
-        })->save($args['to_path'] ?? null);
+        } else {
+            // v2 版本的 resize 操作
+            $imageInstance->resize($args['width'] ?: null, $args['height'] ?: null, function ($constraint) use ($args) {
+                if (!isset($args['aspectRatio']) || $args['aspectRatio'] == 1 || $args['aspectRatio'] == true) {
+                    $constraint->aspectRatio();
+                }
+
+                if (!isset($args['upsize']) || $args['upsize'] == 1 || $args['upsize'] == true) {
+                    $constraint->upsize();
+                }
+            })->save($args['to_path'] ?? null);
+        }
 
         unset($imageInstance);
 
@@ -142,35 +184,53 @@ class ImageHandler implements IImage
 
         $args['text'] = urldecode($args['text']);
 
-        $imageInstance->text($args['text'], $args['x'] ?? 0, $args['y'] ?? 0, function ($font) use ($args) {
+        // 处理字体文件
+        $fontFile = null;
+        if (isset($args['fontFile']) && $args['fontFile']) {
+            $args['fontFile'] = $this->checkFile($args['fontFile']);
+            $fontType = strtolower(pathinfo($args['fontFile'])['extension']);
+            if (in_array($fontType, ['fft', 'otf', 'woff', 'woff2'])) {
+                $fontFile = $args['fontFile'];
+            }
+        }
 
-            if (isset($args['fontFile'])) {
+        if (!$fontFile) {
+            $fontFile = Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'zhttfs', 'DroidSansFallbackFull.ttf']);
+        }
 
-                if ($args['fontFile']) {
+        if ($this->version == 3) {
+            // v3 版本的 text 操作
+            $textOptions = [
+                'fontFile' => $fontFile,
+                'size' => $args['fontSize'] ?? 12,
+                'color' => $args['color'] ?? '#000000',
+                'align' => $args['align'] ?? 'left',
+                'valign' => $args['valign'] ?? 'bottom',
+                'angle' => $args['angle'] ?? 0
+            ];
 
-                    $args['fontFile'] = $this->checkFile($args['fontFile']);
+            // v3 中 kerning 可能在不同驱动中有不同实现
+            if (isset($args['kerning'])) {
+                $textOptions['kerning'] = $args['kerning'];
+            }
 
-                    $fontType = strtolower(pathinfo($args['fontFile'])['extension']);
+            $imageInstance->text($args['text'], $args['x'] ?? 0, $args['y'] ?? 0, $textOptions)
+                ->save($args['to_path'] ?? null);
+        } else {
+            // v2 版本的 text 操作
+            $imageInstance->text($args['text'], $args['x'] ?? 0, $args['y'] ?? 0, function ($font) use ($args, $fontFile) {
+                $font->file($fontFile);
+                $font->size($args['fontSize'] ?? 12);
+                $font->color($args['color'] ?? '#000000');
+                $font->align($args['align'] ?? '');
+                $font->valign($args['valign'] ?? '');
+                $font->angle($args['angle'] ?? 0);
 
-                    if (!in_array($fontType, ['fft', 'otf', 'woff', 'woff2'])) {
-                        unset($args['fontFile']);
-                    }
-                } else {
-                    unset($args['fontFile']);
+                if ($this->driver instanceof \Intervention\Image\Imagick\Driver) {
+                    $font->kerning($args['kerning'] ?? 0);
                 }
-            }
-
-            $font->file($args['fontFile'] ?? Module::getInstance()->getRoot() . implode(DIRECTORY_SEPARATOR, ['assets', 'zhttfs', 'DroidSansFallbackFull.ttf']));
-            $font->size($args['fontSize'] ?? 12);
-            $font->color($args['color'] ?? '#000000');
-            $font->align($args['align'] ?? '');
-            $font->valign($args['valign'] ?? '');
-            $font->angle($args['angle'] ?? 0);
-
-            if ($this->driver instanceof \Intervention\Image\Imagick\Driver) {
-                $font->kerning($args['kerning'] ?? 0);
-            }
-        })->save($args['to_path'] ?? null);
+            })->save($args['to_path'] ?? null);
+        }
 
         unset($imageInstance);
 
@@ -221,8 +281,13 @@ class ImageHandler implements IImage
             return $imgPath;
         }
 
-        $imageInstance->insert($args['imgPath'], $args['position'] ?? 'bottom-right', $args['x'] ?? 0, $args['y'] ?? 0)
-            ->save($args['to_path'] ?? null);
+        if ($this->version == 2) {
+            $imageInstance->insert($args['imgPath'], $args['position'] ?? 'bottom-right', $args['x'] ?? 0, $args['y'] ?? 0)
+                ->save($args['to_path'] ?? null);
+        } else {
+            $imageInstance->place($args['imgPath'], $args['position'] ?? 'bottom-right', $args['x'] ?? 0, $args['y'] ?? 0)
+                ->save($args['to_path'] ?? null);
+        }
 
         unset($imageInstance);
 
@@ -233,14 +298,17 @@ class ImageHandler implements IImage
      * 获取Image示例
      *
      * @param string $imgPath 原始图片路径
-     * @return null|\Intervention\Image\Image
+     * @return null|\Intervention\Image\AbstractDriver|\Intervention\Image\Drivers\AbstractDriver
      */
     public function image($imgPath)
     {
         $imgPath = $this->checkFile($imgPath);
 
-        if (!$this->driver) {
+        if (stripos($imgPath, App::getRootPath()) === false) {
+            $imgPath = App::getRootPath() . 'public' . ltrim($imgPath, '.');
+        }
 
+        if (!$this->driver) {
             $driverType = $this->getDriverType();
 
             if (!$driverType) {
@@ -250,11 +318,7 @@ class ImageHandler implements IImage
             $this->driver = $this->createDriver($driverType);
         }
 
-        if (stripos($imgPath, App::getRootPath()) === false) {
-            $imgPath = App::getRootPath() . 'public' . ltrim($imgPath, '.');
-        }
-
-        return $this->driver->init($imgPath);
+        return $this->version == 2 ? $this->driver->init($imgPath) : $this->driver->read($imgPath);
     }
 
     /**
@@ -279,20 +343,28 @@ class ImageHandler implements IImage
      * Creates a driver instance
      * @param string $driver imagick|gd
      * 
-     * @return \Intervention\Image\AbstractDriver
+     * @return null|\Intervention\Image\AbstractDriver|\Intervention\Image\Drivers\AbstractDriver
      */
     protected function createDriver($driverType)
     {
         if ($driverType) {
-            $driverclass = sprintf('\\Intervention\\Image\\%s\\Driver', ucfirst($driverType));
 
-            if (class_exists($driverclass)) {
-                return new $driverclass;
+            $driverclass = null;
+
+            if ($this->version == 2) {
+                $driverclass = sprintf('\\Intervention\\Image\\%s\\Driver', ucfirst($driverType));
+            } else {
+                $driverclass = sprintf('\\Intervention\\Image\\Drivers\\%s\\Driver', ucfirst($driverType));
             }
 
-            throw new \Exception(
-                "Driver ({$driverType}) could not be instantiated."
-            );
+            if (!class_exists($driverclass)) {
+                throw new \Exception(
+                    "Driver ({$driverType}) could not be instantiated."
+                );
+            }
+
+            return $this->version == 2 ? new $driverclass
+                : new \Intervention\Image\ImageManager(new $driverclass);
         }
 
         throw new \Exception(
