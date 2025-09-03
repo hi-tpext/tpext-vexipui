@@ -68,7 +68,7 @@ class LinkBtn extends Bar
         let postCheckedUrl = '{$this->postChecked}';
 
         if(openCheckedUrl) {
-            {$btnId}OpenChecked(ids, openCheckedUrl);
+            {$btnId}OpenChecked(openCheckedUrl, ids);
             return false;
         }
         let confirm = '{$this->confirm}';

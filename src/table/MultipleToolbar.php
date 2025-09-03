@@ -210,7 +210,7 @@ class MultipleToolbar extends Toolbar
     public function btnAdd($url = '', $label = '添加', $type = 'success', $icon = 'mdi-plus', $attr = '')
     {
         if (empty($url)) {
-            $url = (string)url('add');
+            $url = (string) url('add');
         }
         if ($label == '添加') {
             $label = __blang('bilder_action_add');
@@ -238,7 +238,7 @@ class MultipleToolbar extends Toolbar
     public function btnDelete($postUrl = '', $label = '删除', $type = 'error', $icon = 'mdi-delete', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = (string)url('delete');
+            $postUrl = (string) url('delete');
         }
         if ($label == '删除') {
             $label = __blang('bilder_action_delete');
@@ -262,7 +262,7 @@ class MultipleToolbar extends Toolbar
     public function btnDisable($postUrl = '', $label = '禁用', $type = 'warning', $icon = 'mdi-block-helper', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = (string)url('enable', ['state' => 0]);
+            $postUrl = (string) url('enable', ['state' => 0]);
         }
         if ($label == '禁用') {
             $label = __blang('bilder_action_disable');
@@ -286,7 +286,7 @@ class MultipleToolbar extends Toolbar
     public function btnEnable($postUrl = '', $label = '启用', $type = 'success', $icon = 'mdi-check', $attr = '', $confirm = true)
     {
         if (empty($postUrl)) {
-            $postUrl = (string)url('enable', ['state' => 1]);
+            $postUrl = (string) url('enable', ['state' => 1]);
         }
         if ($label == '启用') {
             $label = __blang('bilder_action_enable');
@@ -374,7 +374,7 @@ class MultipleToolbar extends Toolbar
     public function btnImport($afterSuccessUrl = '', $acceptedExts = "rar,zip,doc,docx,xls,xlsx,ppt,pptx,pdf", $layerSize = ['800px', '550px'], $fileSize = '20', $label = '导入', $type = 'info', $icon = 'mdi-cloud-upload', $attr = 'title="上传文件"', $driver = '\\tpext\\builder\\logic\\LocalStorage')
     {
         if (empty($afterSuccessUrl)) {
-            $afterSuccessUrl = (string)url('/admin/import/afterSuccess');
+            $afterSuccessUrl = (string) url('/admin/import/afterSuccess');
         }
 
         if (is_array($acceptedExts)) {
@@ -393,7 +393,7 @@ class MultipleToolbar extends Toolbar
 
         $pagetoken = md5($importpagetoken . $acceptedExts . $fileSize);
 
-        $url = (string)url(Module::getInstance()->getImportUrl()) . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken . '&driver=' . $driver;
+        $url = (string) url(Module::getInstance()->getImportUrl()) . '?successUrl=' . $afterSuccessUrl . '&acceptedExts=' . $acceptedExts . '&fileSize=' . $fileSize . '&pageToken=' . $pagetoken . '&driver=' . $driver;
 
         if ($label == '导入') {
             $label = __blang('bilder_action_import');
@@ -420,7 +420,7 @@ class MultipleToolbar extends Toolbar
     public function btnExport($postUrl = '', $label = '导出', $type = '', $icon = 'mdi-export', $attr = 'title="导出"')
     {
         if (empty($postUrl)) {
-            $postUrl = (string)url('export');
+            $postUrl = (string) url('export');
         }
 
         if (!Builder::checkUrl($postUrl)) {
@@ -455,7 +455,7 @@ class MultipleToolbar extends Toolbar
     public function btnExports($items = [], $postUrl = '', $label = '导出', $type = '', $icon = 'mdi-export', $attr = 'title="导出"')
     {
         if (empty($postUrl)) {
-            $postUrl = (string)url('export');
+            $postUrl = (string) url('export');
         }
 
         if (empty($items)) {
@@ -520,10 +520,10 @@ class MultipleToolbar extends Toolbar
      */
     public function btnLink($url, $label = '', $type = '', $icon = 'mdi-checkbox-marked-outline', $attr = '')
     {
-        $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
+        $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', 'ac_$1', $url, -1, $count);
 
         if (!$count) {
-            $action = preg_replace('/\W/', '_', $url);
+            $action = 'ac_' . preg_replace('/\W/', '_', $url);
         }
 
         if (isset($this->actions[$action])) {
@@ -551,10 +551,10 @@ class MultipleToolbar extends Toolbar
      */
     public function btnPostChecked($url, $label = '', $type = '', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
-        $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
+        $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', 'ac_$1', $url, -1, $count);
 
         if (!$count) {
-            $action = preg_replace('/\W/', '_', $url);
+            $action = 'ac_' . preg_replace('/\W/', '_', $url);
         }
 
         if (isset($this->actions[$action])) {
@@ -582,10 +582,10 @@ class MultipleToolbar extends Toolbar
      */
     public function btnOpenChecked($url, $label = '', $type = '', $icon = 'mdi-checkbox-marked-outline', $attr = '')
     {
-        $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
+        $action = preg_replace('/.+?\/(\w+)(\.\w+)?$/', 'ac_$1', $url, -1, $count);
 
         if (!$count) {
-            $action = preg_replace('/\W/', '_', $url);
+            $action = 'ac_' . preg_replace('/\W/', '_', $url);
         }
 
         if (isset($this->actions[$action])) {

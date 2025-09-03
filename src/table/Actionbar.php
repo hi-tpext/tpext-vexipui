@@ -375,10 +375,10 @@ class Actionbar extends Toolbar
     public function btnLink($name = '', $url = '', $label = '', $type = '', $icon = '', $attr = '')
     {
         if (!$name) {
-            $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $url, -1, $count);
+            $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', 'ac_$1', $url, -1, $count);
 
             if (!$count) {
-                $name = preg_replace('/\W/', '_', $url);
+                $name = 'ac_' . preg_replace('/\W/', '_', $url);
             }
         }
 
@@ -403,10 +403,10 @@ class Actionbar extends Toolbar
     public function btnPostRowid($name = '', $postUrl = '', $label = '', $type = '', $icon = 'mdi-checkbox-marked-outline', $attr = '', $confirm = true)
     {
         if (!$name) {
-            $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', '$1', $postUrl, -1, $count);
+            $name = preg_replace('/.+?\/(\w+)(\.\w+)?$/', 'ac_$1', $postUrl, -1, $count);
 
             if (!$count) {
-                $name = preg_replace('/\W/', '_', $postUrl);
+                $name = 'ac_' . preg_replace('/\W/', '_', $postUrl);
             }
         }
 
