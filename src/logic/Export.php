@@ -152,6 +152,9 @@ class Export
      */
     public function toExcel($title, $data, $displayers, $type, $buildTable = null)
     {
+        if ($type == 'xlsx' && class_exists('\\Vtiful\\Kernel\\Excel')) {
+            return $this->toXlswriter($title, $data, $displayers, $type, $buildTable);
+        }
         $title = str_replace([' ', '.', '!', '@', '#', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
 
         if (ob_get_contents()) {
@@ -304,6 +307,77 @@ class Export
 
     /**
      * Undocumented function
+     * @param string $title
+     * @param array|Collection|\IteratorAggregate|\Generator $data
+     * @param array $displayers
+     * @param string $type
+     * @param \Closure|null $buildTable
+     * @return mixed
+     */
+    public function toXlswriter($title, $data, $displayers, $type, $buildTable = null)
+    {
+        $title = str_replace([' ', '.', '!', '@', '#', '＃', '$', '%', '^', '&', '*', '(', ')', '{', '}', '【', '】', '[', ']'], '', trim($title));
+
+        if (ob_get_contents()) {
+            ob_end_clean();
+        }
+
+        $header = [];
+        $body = [];
+
+        foreach ($displayers as $k => $displayer) {
+            $label = $displayer->getLabel();
+            $label = preg_replace('/_?id$/i', __blang('bilder_column_id_replace'), $label);
+            $header[] = $label;
+        }
+        $num = 0;
+        $text = null;
+        foreach ($data as $d) {
+            if ($buildTable) {
+                $buildTable([$d]);
+            }
+            $row = [];
+            foreach ($displayers as $key => $displayer) {
+                $text = $displayer->lockValue(false)->value('')->fill($d)->renderValue();
+                $text = $this->replace($text);
+                $row[] = $text;
+            }
+            $body[] = $row;
+            $num++;
+        }
+        unset($text);
+
+        $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
+        if (!is_dir($dir)) {
+            if (!mkdir($dir, 0755, true)) {
+                return json(['code' => 0, 'msg' => __blang('bilder_make_dir_failed')]);
+            }
+        }
+
+        $config = [
+            'path' => $dir // xlsx文件保存路径
+        ];
+        $excel = new \Vtiful\Kernel\Excel($config);
+        $fname = $title . "-" . date('Ymd-His') . mt_rand(100, 999) . ".xlsx";
+        // fileName 会自动创建一个工作表，你可以自定义该工作表名称，工作表名称为可选参数
+        $filePath = $excel->fileName($fname)
+            ->header($header)
+            ->data($body)
+            ->output();
+
+        if (request()->isAjax()) {
+            $file = str_replace(App::getRuntimePath() . 'export/', '', $filePath);
+            return json(['code' => 1, 'msg' => '文件已生成', 'data' => url('export') . '?path=' . $file]);
+        } else {
+            if (ExtLoader::isWebman()) {
+                return response()->download($filePath, $fname);
+            }
+            return download($filePath, $fname);
+        }
+    }
+
+    /**
+     * Undocumented function
      *
      * @param string $title
      * @param array|Collection|\IteratorAggregate|\Generator $data
@@ -323,7 +397,7 @@ class Export
         $time = date('YmdHis') . '_' . mt_rand(100, 999);
 
         $dir = App::getRuntimePath() . 'export/' . date('Ymd') . '/';
-        $dir2 = App::getRuntimePath() .  'export/' . date('Ymd') . '/qr' . $time . '/';
+        $dir2 = App::getRuntimePath() . 'export/' . date('Ymd') . '/qr' . $time . '/';
 
         if (!is_dir($dir2)) {
             if (!mkdir($dir2, 0755, true)) {

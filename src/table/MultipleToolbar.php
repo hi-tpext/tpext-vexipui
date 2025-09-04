@@ -461,9 +461,8 @@ class MultipleToolbar extends Toolbar
         if (empty($items)) {
             $items = ['csv' => __blang('bilder_action_export_csv')];
 
-            if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet') || class_exists('\\PHPExcel')) {
+            if (class_exists('\\PhpOffice\\PhpSpreadsheet\\Spreadsheet') || class_exists('\\Vtiful\\Kernel\\Excel') || class_exists('\\PHPExcel')) {
                 $items = array_merge($items, [
-                    'xls' => __blang('bilder_action_export_xls'),
                     'xlsx' => __blang('bilder_action_export_xlsx'),
                 ]);
             }

@@ -34,4 +34,12 @@ comnpser：
 
 #### 图片压缩／水印
 
-使用`intervention/image 2.x`库，支持`Gd`和`Imagic`(推荐)两种php图片处理库
+使用`intervention/image 2.x / 3.x`库，支持`Gd`和`Imagic`(推荐)两种php图片处理库
+
+#### 2025-09-04 更新
+
+支持`xlswriter`导出
+
+安装php扩展`xlswriter`后不依赖`PhpSpreadsheet`或`PHPExcel`也可以导出`xlsx`格式文件，如果同时存在，也优先使用`xlswriter`
+
+导出菜单默认移除`xls`格式，支持[csv/xlsx]
