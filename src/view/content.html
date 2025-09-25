@@ -6,6 +6,15 @@
 {/block}
 
 {block name="content"}
+<script type="text/javascript">
+  (function() {
+      if (localStorage.getItem('site_theme') === 'dark') {
+          document.documentElement.classList.add('dark');
+      } else {
+          document.documentElement.classList.remove('dark');
+      }
+  })();
+</script>
 <div class="page-loader" id="page-loader" style="display: none;">
   <script type="text/javascript">
     if(/^layui\-layer\-iframe/i.test(window.name)){
@@ -80,12 +89,30 @@
       onBeforeMount(() => {
         document.getElementById('page-loader').remove();
         document.getElementById('app').style.display = 'block';
+        listenThemeChange();
       });
       onMounted(() => {
         
         {$onMountedScript|raw}
 
       });
+
+      const listenThemeChange = () => {
+        // 监听来自父窗口的主题更改消息
+        window.addEventListener('message', (event) => {
+            // 检查消息类型是否为更改主题
+            if (event.data.type === 'change_theme') {
+                // 获取主题值
+                const themeValue = event.data.value || event.data.theme;
+                // 根据主题值设置暗黑模式
+                if (themeValue === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }
+        });
+      };
 
       {$setupScript|raw}
 
