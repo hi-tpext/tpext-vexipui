@@ -716,6 +716,7 @@ html.dark body {
   box-shadow: none;
   border: 1px solid var(--vxp-border-color-light-1);
   border-radius: 4px;
+  color: var(--vxp-content-color-base);
 }
 
 .main-panel-heading {
@@ -1049,6 +1050,7 @@ html.dark body {
   max-width: 100%;
   width: 100%;
   overflow: hidden;
+  color: var(--vxp-content-color-base);
 }
 
 .table-pager {
@@ -1441,6 +1443,11 @@ span.the-field {
   display: inline-block;
 }
 
+/*修正暗黑模式的暗色*/
+html.dark span.the-field {
+  color: var(--vxp-content-color-base);
+}
+
 .default span.the-field,
 span.the-field.default {
   color: #8b95a5;
@@ -1489,22 +1496,12 @@ span.the-field.danger {
   background-color: #f9686810;
 }
 
-.dark span.the-field,
+div.dark span.the-field,
 span.the-field.dark {
   color: #465161;
   border: 1px solid #46516130;
   padding: 3px 7px;
   background-color: #46516110;
-}
-
-/*修正暗黑模式的暗色*/
-html.dark span.the-field {
-  color: var(--vxp-content-color-base);
-}
-
-html.dark .dark span.the-field,
-html.dark span.the-field.dark {
-  color: var(--vxp-content-color-base);
 }
 
 .secondary span.the-field,
