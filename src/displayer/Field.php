@@ -1517,13 +1517,22 @@ EOT;
      */
     public function getVModel()
     {
+        $name = $this->getName();
+        if (strstr($name, '.')) {
+            //解决多层字段使用数字作为键名非法问题，如 .price.2 应转换为 .price['2']
+            $arr = explode('.', $name);
+            $name = $arr[0];
+            array_shift($arr);
+            $name .= "['" . implode("']['", $arr) . "']";
+        }
+
         if ($this->inTable) {
-            return 'row.' . $this->getName();
+            return 'row.' . $name;
         }
         if ($this->formMode == 'form' || $this->formMode == 'search') {
-            return $this->getForm()->getFormId() . 'Data.' . $this->getName();
+            return $this->getForm()->getFormId() . 'Data.' . $name;
         }
-        return 'row.' . $this->getName();
+        return 'row.' . $name;
     }
 
     /**
