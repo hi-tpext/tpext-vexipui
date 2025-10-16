@@ -705,10 +705,10 @@ EOT;
                 continue;
             }
 
-            $thumbFile = './thumb/' . md5($file) . '-' . $options['width'] . 'x' . $options['height'] . '.' . $ext;
+            $thumbFile = '/thumb/' . md5($file) . '-' . $options['width'] . 'x' . $options['height'] . '.' . $ext;
 
-            if (is_file($thumbFile)) {
-                $thumbs[] = ltrim($thumbFile, '.');
+            if (is_file(App::getPublicPath() .$thumbFile)) {
+                $thumbs[] = $thumbFile;
                 continue;
             }
 
@@ -718,7 +718,7 @@ EOT;
                     $thumbs[] = $file;
                     continue;
                 }
-                if (!@file_put_contents($thumbFile, $data)) {
+                if (!@file_put_contents(App::getPublicPath() . $thumbFile, $data)) {
                     $thumbs[] = $file;
                     continue;
                 }
@@ -728,8 +728,7 @@ EOT;
                 continue;
             }
             try {
-                $options['to_path'] = $thumbFile;
-                $handler->resize($file, $options);
+                $options['to_path'] = App::getPublicPath() . $thumbFile;
                 $thumbs[] = $handler->resize($file, $options);
             } catch (\Exception $e) {
                 $thumbs[] = $file;
