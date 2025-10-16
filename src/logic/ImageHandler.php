@@ -141,9 +141,9 @@ class ImageHandler implements IImage
 
             // 处理宽高比
             if (!isset($args['aspectRatio']) || $args['aspectRatio'] == 1 || $args['aspectRatio'] == true) {
-                $imageInstance->scale($args['width'] ?: null, $args['height'] ?: null)->save($args['to_path'] ?? null);
+                $imageInstance->scaleDown($args['width'] ?: null, $args['height'] ?: null)->save($args['to_path'] ?? null);
             } else {
-                $imageInstance->resize($args['width'] ?: null, $args['height'] ?: null)->save($args['to_path'] ?? null);
+                $imageInstance->resizeDown($args['width'] ?: null, $args['height'] ?: null)->save($args['to_path'] ?? null);
             }
         } else {
             // v2 版本的 resize 操作
