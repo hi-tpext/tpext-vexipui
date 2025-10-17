@@ -7,11 +7,11 @@
                     <div class="pic-item-cover" {$thumbnailStyle|raw}>
                         <figure>
                             <img object-fit="fill"
-                                :src="$__getImageOrFileIco({$VModel}__thumbs[index] || file, {$id}Op.isImage)"
+                                :src="$__getImageOrFileIco({$VModel}__thumbs[index] || file, {$id}Op)"
                                 :alt="file" />
                             <figcaption>
                                 <span title="{:__blang('bilder_action_view')}" class="opt-btn preview-file"
-                                    @click="previewFile(file, {$VModel}, {$id}Op.isImage)">
+                                    @click="previewFile(file, {$VModel}, {$id}Op)">
                                     <i class="mdi mdi-eye"></i>
                                 </span>
                                 {if condition="$canUpload"}

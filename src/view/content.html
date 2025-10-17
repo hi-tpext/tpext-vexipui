@@ -69,8 +69,8 @@
     {$componentsImport} 
   } from 'vexip-ui';
 
-  const __getImageOrFileIco = (url, isImage) => {
-    if(__isImage(url, isImage)) {
+  const __getImageOrFileIco = (url, op) => {
+    if(__isImage(url, op)) {
         return url;
     }
     return '/index/file/extimg?type=' + url.replace(/.+?\.(\w+)$/, '$1');
@@ -124,14 +124,14 @@
       const previewActive = ref(false);
       const previewIndex = ref(0);
 
-      const previewFile = (file, files, isImage) => {
+      const previewFile = (file, files, op) => {
           if(!Array.isArray(files)) {
               files = files.split(',').filter(x => x.trim());
           }
           previewImageUrl.value = file;
-          if(__isImage(file, isImage)) {
+          if(__isImage(file, op)) {
               previewImageUrl.value = file;
-              let images = files.filter(x => __isImage(x, isImage));
+              let images = files.filter(x => __isImage(x, op));
               let i = 0;
               images.forEach(x => {
                   if(x === file) {
