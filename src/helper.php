@@ -26,7 +26,7 @@ if (!function_exists('csrf_token')) {
 }
 
 if (!function_exists('__blang')) {
-    function __blang($name = null, $vars = [], $range = '')
+    function __blang($name = '', $vars = [], $range = '')
     {
         return Lang::get($name, $vars, $range);
     }
