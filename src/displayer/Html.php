@@ -23,7 +23,7 @@ class Html extends Field
 
     public function created($type = '')
     {
-        $this->getWrapper()->setName($this->name);
+        $this->getWrapper()->setName($this->name)->addStyle('min-height: 1px');
     }
 
     /**
@@ -85,6 +85,7 @@ class Html extends Field
     {
         return [
             'vBind' => $this->vBind,
+            'hasWrapper' => $this->label || $this->renderValue()
         ];
     }
 }
