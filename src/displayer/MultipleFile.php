@@ -694,7 +694,7 @@ EOT;
         $thumbs = [];
 
         foreach ($files as $file) {
-            if (strstr($file, '/assets/tpextbuilder/images/')) {
+            if (strstr($file, '/assets/tpextvexipui/images/')) {
                 $thumbs[] = $file;
                 continue;
             }
