@@ -19,7 +19,7 @@ class ImageHandler implements IImage
     /**
      * 驱动实例
      *
-     * @var \Intervention\Image\AbstractDriver|\Intervention\Image\Drivers\AbstractDriver
+     * @var \Intervention\Image\AbstractDriver|\Intervention\Image\ImageManager
      */
     protected $driver;
 
@@ -298,7 +298,7 @@ class ImageHandler implements IImage
      * 获取Image示例
      *
      * @param string $imgPath 原始图片路径
-     * @return null|\Intervention\Image\AbstractDriver|\Intervention\Image\Drivers\AbstractDriver
+     * @return null|\Intervention\Image\Image|\Intervention\Image\Interfaces\ImageInterface
      */
     public function image($imgPath)
     {
@@ -343,7 +343,7 @@ class ImageHandler implements IImage
      * Creates a driver instance
      * @param string $driver imagick|gd
      * 
-     * @return null|\Intervention\Image\AbstractDriver|\Intervention\Image\Drivers\AbstractDriver
+     * @return null|\Intervention\Image\AbstractDriver|\Intervention\Image\ImageManager
      */
     protected function createDriver($driverType)
     {
