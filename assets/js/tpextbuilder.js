@@ -82,6 +82,8 @@
     w.layerCloseWindow = () => {
         if (window !== top && parent.layer) {
             parent.layer.close(parent.layer.getFrameIndex(w.name));
+        } else if (window.opener) {
+            window.close();
         }
     }
 
