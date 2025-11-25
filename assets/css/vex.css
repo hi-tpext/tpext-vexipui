@@ -1003,6 +1003,11 @@ html.dark body {
   margin-right: -4px;
 }
 
+.fields-content+.help-block {
+  margin-top: -13px;
+  margin-bottom: 13px;
+}
+
 .vxp-step-tabs .vxp-alert {
   align-content: center;
   justify-content: center;
