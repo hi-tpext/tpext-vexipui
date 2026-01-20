@@ -106,12 +106,18 @@ class Textarea extends Field
         }
     };
 
+    //输入后需要失去焦点才更新值，监听事件强制改变
+    const {$fieldId}Input = (row, value) => {
+        {$VModel} = value;
+    };
+
 EOT;
         $this->setupScript[] = $script;
 
         $this->addVueToken([
             "{$fieldId}Blur",
             "{$fieldId}Change",
+            "{$fieldId}Input",
         ]);
     }
 }

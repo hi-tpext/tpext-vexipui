@@ -850,7 +850,6 @@ class Table extends TWrapper implements Renderable
     };
 
     const {$table}CellDblClick = ({ row, rowIndex, column, columnIndex }) => {
-        console.log(column)
         if (column.key == '__action__' || (column.meta && column.meta.isInput)) {
             return;
         }

@@ -1,5 +1,5 @@
 {include file="$begintempl" /}
 <vxp-textarea class="{$class}" placeholder="{$placeholder}" v-bind="{$id}Op" v-model:value.lazy="{$VModel}"
-    @blur="{$id}Blur(row, $event)" @change="{$id}Change" {$attr|raw}>
+    @blur="{$id}Blur(row, $event)" @change="{$id}Change" @input="{$id}Input(row, $event)" {$attr|raw}>
 </vxp-textarea>
 {include file="$endtempl" /}
