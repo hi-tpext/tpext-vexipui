@@ -80,6 +80,7 @@ class Search extends SWrapper implements Renderable
      */
     public function created()
     {
+        $this->class = 'form-horizontal';
         $this->open = Module::config('search_open') == 1;
 
         return $this;

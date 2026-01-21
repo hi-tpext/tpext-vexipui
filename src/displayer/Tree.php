@@ -125,11 +125,11 @@ class Tree extends Field
     protected function treeOptions()
     {
         $value = $this->renderValue();
-        $options = $this->getChildren($this->options, $value);
+        $options = $this->getChildrenOptions($this->options, $value);
         return $options;
     }
 
-    protected function getChildren($arr, $value)
+    protected function getChildrenOptions($arr, $value)
     {
         $options = [];
         foreach ($arr as $data) {
@@ -140,7 +140,7 @@ class Tree extends Field
                 'selected' => !$this->multiple && $data['id'] == $value,
                 'checked' => $this->multiple && in_array($data['id'], $value),
                 'expanded' => $this->expandAll ? true : false,
-                'children' => $this->getChildren($data['children'] ?? [], $value),
+                'children' => $this->getChildrenOptions($data['children'] ?? [], $value),
                 'checkDisabled' => !$this->multiple,
             ];
         }

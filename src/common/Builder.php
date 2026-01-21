@@ -474,8 +474,8 @@ class Builder implements Renderable
             $styles = [$styles];
         }
         foreach ($styles as $style) {
-            if (!empty($script)) {
-                $this->styleSheet[md5($script)] = $style;
+            if (!empty($style)) {
+                $this->styleSheet[md5($style)] = $style;
             }
         }
         return $this;

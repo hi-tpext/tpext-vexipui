@@ -103,6 +103,7 @@ class Form extends FWrapper implements Renderable
      */
     public function created()
     {
+        $this->class = 'form-horizontal';
         return $this;
     }
 
