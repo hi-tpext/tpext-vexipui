@@ -145,6 +145,18 @@ class Items extends Field
         return $this;
     }
 
+     /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function canRecover($val)
+    {
+        $this->__items_content__->canRecover($val);
+        return $this;
+    }
+
     /**
      * Undocumented function
      *

@@ -46,6 +46,7 @@ class ItemsContent extends FWrapper
     protected $actionRowText = '';
     protected $canDelete = true;
     protected $canAdd = true;
+    protected $canRecover = true;
     protected $name = '';
     protected $label = '';
     protected $template = [];
@@ -242,6 +243,18 @@ class ItemsContent extends FWrapper
     public function canAdd($val)
     {
         $this->canAdd = $val;
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param boolean $val
+     * @return $this
+     */
+    public function canRecover($val)
+    {
+        $this->canRecover = $val;
         return $this;
     }
 
@@ -613,6 +626,7 @@ EOT;
         $tableColumns = json_encode($this->tableColumns, JSON_UNESCAPED_UNICODE);
         $initData = json_encode(array_values($this->dataList), JSON_UNESCAPED_UNICODE);
         $template = json_encode($this->template, JSON_UNESCAPED_UNICODE);
+        $canRecover = $this->canRecover ? 'true' : 'false';
 
         $this->convertScripts = array_filter($this->convertScripts, 'strlen');
         $convertScripts = '';
@@ -629,6 +643,7 @@ EOT;
     const {$table}ToolbarId = ref('{$table}-toolbar-' + (window.location.origin + window.location.pathname).replace(/\W/g, '_'));
 
     let {$table}NewIndex = 0;
+    let {$table}CanRecover = {$canRecover};
 
     const {$table}DelBtnOp = ref({
         'size': 'small',
@@ -646,7 +661,22 @@ EOT;
         if(/^__new__\d+$/.test(row.__pk__)) {
             {$table}InitData.value = {$table}InitData.value.filter(x => x.__pk__ != row.__pk__);
         } else {
-            row.__del__ = 1;
+            if(!{$table}CanRecover) {
+                VxpConfirm.open({
+                    title : __blang.bilder_operation_tips,
+                    content: __blang.bilder_confirm_to_do_operation + ' [' + __blang.bilder_remove + '] ' + __blang.bilder_action_operation + ' ?',
+                    confirmText : __blang.bilder_button_ok,
+                    cancelText : __blang.bilder_button_cancel,
+                    confirmType: 'warning',
+                }).then((res) => {
+                    if(res) {
+                        row.__del__ = 1;
+                    }
+                });
+            }
+            else{
+                row.__del__ = 1;
+            }
         }
     };
 
@@ -708,6 +738,10 @@ EOT;
         return row;
     };
 
+    const {$table}Data = computed(()=>{
+        return {$table}CanRecover ? {$table}InitData.value : {$table}InitData.value.filter(x => x.__del__ != 1);
+    });
+
     const {$table}Op = ref({
         'border': true,
         'stripe' : true,
@@ -716,7 +750,7 @@ EOT;
             'id' : '__pk__',
         },
         'single-sorter' : true,//设置后将限制表格只能有一列开启排序,
-        'data': {$table}InitData,
+        'data': {$table}Data,
         'disabled-tree' : true,
         'use-x-bar' : true,
         'col-resizable' : 'responsive',
