@@ -80,7 +80,7 @@ class FRow extends FWrapper implements Renderable
             return $this->createDisplayer($class, $arguments);
         }
 
-        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
+        throw new \InvalidArgumentException(__blang('builder_invalid_argument_exception') . ' : ' . $name);
     }
 
     public function destroy()

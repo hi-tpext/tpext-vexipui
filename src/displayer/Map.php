@@ -162,7 +162,7 @@ EOT;
     {
         return array_merge(parent::customVars(), [
             'maptype' => $this->type,
-            'placeholder' => $this->placeholder ?: __blang('bilder_please_select') . $this->label,
+            'placeholder' => $this->placeholder ?: __blang('builder_please_select') . $this->label,
             'mapStyle' => 'style="width: ' . $this->width . ';height: ' . $this->height . ';max-width: 100%;"',
         ]);
     }

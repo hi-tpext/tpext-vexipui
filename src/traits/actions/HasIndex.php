@@ -85,7 +85,7 @@ trait HasIndex
 
     public function index()
     {
-        $builder = $this->builder($this->pageTitle, $this->indexText ?: __blang('bilder_page_index_text'), 'index');
+        $builder = $this->builder($this->pageTitle, $this->indexText ?: __blang('builder_page_index_text'), 'index');
 
         $this->createTable($builder);
 
@@ -144,7 +144,7 @@ trait HasIndex
                 $this->treeTextField,
                 $this->treeIdField,
                 $this->treeParentIdField,
-                $this->treeRootText ?: __blang('bilder_left_tree_text_all')
+                $this->treeRootText ?: __blang('builder_left_tree_text_all')
             );
             $tree->expandAll($this->treeExpandAll);
             $tree->multiple($this->treeMultiple);

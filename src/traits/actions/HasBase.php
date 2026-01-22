@@ -114,10 +114,10 @@ trait HasBase
         }
 
         if (!$res) {
-            $this->error(__blang('bilder_save_failed'));
+            $this->error(__blang('builder_save_failed'));
         }
 
-        return $this->builder()->layer()->closeRefresh(1, __blang('bilder_save_succeeded'));
+        return $this->builder()->layer()->closeRefresh(1, __blang('builder_save_succeeded'));
     }
 
     /**

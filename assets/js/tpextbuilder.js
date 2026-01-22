@@ -58,9 +58,9 @@
                         return false; //阻止系统默认回车事件
                     }
                     if (event.keyCode === 0x1B) {
-                        var index2 = layer.msg(__blang.bilder_confirm_close_this_window, {
+                        var index2 = layer.msg(__blang.builder_confirm_close_this_window, {
                             time: 2000,
-                            btn: [__blang.bilder_button_ok, __blang.bilder_button_cancel],
+                            btn: [__blang.builder_button_ok, __blang.builder_button_cancel],
                             yes: function (params) {
                                 layer.close(index);
                                 layer.close(index2);

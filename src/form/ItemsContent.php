@@ -76,8 +76,8 @@ class ItemsContent extends FWrapper
 
     public function __construct()
     {
-        $this->actionRowText = __blang('bilder_action_operation');
-        $this->emptyText = '<span>' . __blang('bilder_no_relevant_data') . '</span>';
+        $this->actionRowText = __blang('builder_action_operation');
+        $this->emptyText = '<span>' . __blang('builder_no_relevant_data') . '</span>';
     }
 
     /**
@@ -599,8 +599,8 @@ EOT;
                     continue;
                 }
                 if({$table}Columns.value[field].meta.required && !row[field]) {
-                    let firstError = '[{$label} - ' + {$table}Columns.value[field].title + ']' + __blang.bilder_validate_required;
-                    VxpMessage.warning(__blang.bilder_validate_form_failed + firstError);
+                    let firstError = '[{$label} - ' + {$table}Columns.value[field].title + ']' + __blang.builder_validate_required;
+                    VxpMessage.warning(__blang.builder_validate_form_failed + firstError);
 
                     {$form}Data.__form_error____display__only = firstError;
                     setTimeout(() =>{
@@ -663,10 +663,10 @@ EOT;
         } else {
             if(!{$table}CanRecover) {
                 VxpConfirm.open({
-                    title : __blang.bilder_operation_tips,
-                    content: __blang.bilder_confirm_to_do_operation + ' [' + __blang.bilder_remove + '] ' + __blang.bilder_action_operation + ' ?',
-                    confirmText : __blang.bilder_button_ok,
-                    cancelText : __blang.bilder_button_cancel,
+                    title : __blang.builder_operation_tips,
+                    content: __blang.builder_confirm_to_do_operation + ' [' + __blang.builder_remove + '] ' + __blang.builder_action_operation + ' ?',
+                    confirmText : __blang.builder_button_ok,
+                    cancelText : __blang.builder_button_cancel,
                     confirmType: 'warning',
                 }).then((res) => {
                     if(res) {

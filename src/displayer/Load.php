@@ -14,7 +14,7 @@ class Load extends Field
 
     public function created($type = '')
     {
-        $this->loadingText = __blang('bilder_loading');
+        $this->loadingText = __blang('builder_loading');
         parent::created($type);
     }
 
@@ -116,12 +116,12 @@ class Load extends Field
                     texts.push(d.__text__ || d['{$text}'] || d.text);
                 });
 
-                let result = texts.length ? texts.join('{$separator}') : __blang.bilder_value_is_empty;
+                let result = texts.length ? texts.join('{$separator}') : __blang.builder_value_is_empty;
                 return resolve(result);
             })
             .catch(e => {
                 console.log(e);
-                VxpMessage.error(__blang.bilder_network_error + (e.message || JSON.stringify(e)));
+                VxpMessage.error(__blang.builder_network_error + (e.message || JSON.stringify(e)));
             });
         });
     };
@@ -131,10 +131,10 @@ class Load extends Field
             {$fieldId}LoadData({$VModel}).then(result => {
                 {$VModel}[1] = result;
             }).catch(e => {
-                {$VModel}[1] = __blang.bilder_loading_error;
+                {$VModel}[1] = __blang.builder_loading_error;
             });
         } else {
-            {$VModel} = __blang.bilder_value_is_empty;
+            {$VModel} = __blang.builder_value_is_empty;
         }
     }
 
@@ -162,11 +162,11 @@ EOT;
                     row.{$fieldName}[1] = result;
                     {$fieldId}AjaxCache[row.{$fieldName}[0]] = result;
                 }).catch(e => {
-                    row.{$fieldName}[1] = __blang.bilder_loading_error;
+                    row.{$fieldName}[1] = __blang.builder_loading_error;
                 });    
             }
         } else {
-            row.{$fieldName} = __blang.bilder_value_is_empty;
+            row.{$fieldName} = __blang.builder_value_is_empty;
         }
 EOT;
 

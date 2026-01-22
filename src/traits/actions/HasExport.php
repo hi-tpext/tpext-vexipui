@@ -41,13 +41,13 @@ trait HasExport
         if ($path = input('path')) { //文件下载
             $filePath = App::getRuntimePath() . 'export/' . $path;
             if (!is_file($filePath)) {
-                return '<h3>' . __blang('bilder_file_not_found') . '</h3>' . 'runtime/export/' . $path;
+                return '<h3>' . __blang('builder_file_not_found') . '</h3>' . 'runtime/export/' . $path;
             }
 
             $ftime = filectime($filePath) ?: 0;
 
             if (time() - $ftime > 24 * 60 * 60) {
-                return '<h3>' . __blang('bilder_file_not_found') . '</h3>' . __blang('bilder_term_of_validity_is_{:num}_day', ['num' => 1]);
+                return '<h3>' . __blang('builder_file_not_found') . '</h3>' . __blang('builder_term_of_validity_is_{:num}_day', ['num' => 1]);
             }
 
             $name = preg_replace('/\d+\/(.+?\.\w+)$/', '$1', $path);
@@ -190,7 +190,7 @@ trait HasExport
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
-                $options = [$pair['on'] => __blang('bilder_option_on'), $pair['off'] => __blang('bilder_option_off')];
+                $options = [$pair['on'] => __blang('builder_option_on'), $pair['off'] => __blang('builder_option_off')];
                 $displayer = (new displayer\Matche($fieldName, $col->getLabel()))->options($options);
             }
             $displayer->exporting();

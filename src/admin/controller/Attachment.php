@@ -31,7 +31,7 @@ class Attachment extends Controller
     {
         $this->dataModel = new AttachmentModel;
 
-        $this->pageTitle = __blang('bilder_attachment_manage');
+        $this->pageTitle = __blang('builder_attachment_manage');
         $this->postAllowFields = ['name'];
         $this->pagesize = 8;
     }
@@ -78,8 +78,8 @@ class Attachment extends Controller
     {
         $search = $this->search;
 
-        $search->text('name', __blang('bilder_attachment_name'), '6 col-xs-6')->maxlength(55);
-        $search->text('url', __blang('bilder_attachment_url'), '6 col-xs-6')->maxlength(200);
+        $search->text('name', __blang('builder_attachment_name'), '6 col-xs-6')->maxlength(55);
+        $search->text('url', __blang('builder_attachment_url'), '6 col-xs-6')->maxlength(200);
 
         $exts = [];
         $arr = [];
@@ -96,7 +96,7 @@ class Attachment extends Controller
             $exts[$a] = $a;
         }
 
-        $search->multipleSelect('suffix', __blang('bilder_attachment_suffix'), '6 col-xs-6')->options($exts);
+        $search->multipleSelect('suffix', __blang('builder_attachment_suffix'), '6 col-xs-6')->options($exts);
     }
     /**
      * 构建表格
@@ -110,17 +110,17 @@ class Attachment extends Controller
         $choose = input('choose', 0);
 
         $table->show('id', 'ID');
-        $table->text('name', __blang('bilder_attachment_name'))->autoPost();
-        $table->file('file',  __blang('bilder_attachment_file'))->thumbSize(50, 50);
+        $table->text('name', __blang('builder_attachment_name'))->autoPost();
+        $table->file('file',  __blang('builder_attachment_file'))->thumbSize(50, 50);
         if (!$choose) {
-            $table->show('mime', __blang('bilder_attachment_mime'));
-            $table->show('size', __blang('bilder_attachment_size'))->to('{val}MB');
-            $table->show('suffix', __blang('bilder_attachment_suffix'))->getWrapper()->addStyle('width:80px');
-            $table->show('storage', __blang('bilder_attachment_storage'));
+            $table->show('mime', __blang('builder_attachment_mime'));
+            $table->show('size', __blang('builder_attachment_size'))->to('{val}MB');
+            $table->show('suffix', __blang('builder_attachment_suffix'))->getWrapper()->addStyle('width:80px');
+            $table->show('storage', __blang('builder_attachment_storage'));
         }
 
-        $table->raw('url', __blang('bilder_attachment_url'))->to('<a href="{val}" target="_blank">{val}</a>');
-        $table->show('create_time', __blang('bilder_attachment_create_time'))->getWrapper()->addStyle('width:160px');
+        $table->raw('url', __blang('builder_attachment_url'))->to('<a href="{val}" target="_blank">{val}</a>');
+        $table->show('create_time', __blang('builder_attachment_create_time'))->getWrapper()->addStyle('width:160px');
 
         $table->getToolbar()
             ->btnRefresh()
@@ -144,7 +144,7 @@ class Attachment extends Controller
 
         let selected = {$tableId}GetCheckedRows();//获取选中的行数据
         if(selected.length == 0) {
-            VxpMessage.warning(__blang.bilder_no_data_was_selected);
+            VxpMessage.warning(__blang.builder_no_data_was_selected);
             return;
         }
         let urls = [];
@@ -155,15 +155,15 @@ class Attachment extends Controller
 
 EOT;
                 //也可把上面方法封装成一个方法 window.onChooseFile = function() {//...} 
-                //然后在btn attr中绑定onclick ：btnLink('#', __blang('bilder_choose_multiple_files_button'), 'success', 'mdi-note-plus-outline', 'onclick="onChooseFile"')
+                //然后在btn attr中绑定onclick ：btnLink('#', __blang('builder_choose_multiple_files_button'), 'success', 'mdi-note-plus-outline', 'onclick="onChooseFile"')
                 $table->getToolbar()
-                    ->btnLink('#', __blang('bilder_choose_multiple_files_button'), 'success', 'mdi-note-plus-outline')->barOnClick($choseMultiplescript);
+                    ->btnLink('#', __blang('builder_choose_multiple_files_button'), 'success', 'mdi-note-plus-outline')->barOnClick($choseMultiplescript);
             } else {
                 $table->useCheckbox(false);
             }
 
             $table->getActionbar()
-                ->btnLink('choose', '#', __blang('bilder_choose_file_button'), 'success', 'mdi-note-plus-outline')
+                ->btnLink('choose', '#', __blang('builder_choose_file_button'), 'success', 'mdi-note-plus-outline')
                 ->barOnClick('parent.onChooseFile(row.file)'); //row 为当前行的数据
         } else {
             $table->useCheckbox(false);

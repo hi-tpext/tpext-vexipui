@@ -9,7 +9,7 @@ use tpext\common\Module as baseModule;
 
 class VexipUi extends baseModule
 {
-    protected $version = '1.1.1';
+    protected $version = '1.1.2';
 
     protected $name = 'tpext.vexipui';
 

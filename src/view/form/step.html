@@ -18,12 +18,12 @@
         {if condition="!$readonly"}
         <div class="vxp-step-buttons">
             <vxp-button type="info" :disabled="{$id}Index == 0"
-                @click="{$id}PrevClick">{:__blang('bilder_step_prev')}</vxp-button>
+                @click="{$id}PrevClick">{:__blang('builder_step_prev')}</vxp-button>
             <vxp-button type="primary" v-show="{$id}Index < {$id}Options.length - 1"
                 :disabled="{$id}Index == {$id}Options.length - 1"
-                @click="{$id}NextClick">{:__blang('bilder_step_next')}</vxp-button>
+                @click="{$id}NextClick">{:__blang('builder_step_next')}</vxp-button>
             <vxp-button type="success" v-show="{$id}Index == {$id}Options.length - 1"
-                @click="{$id}FinishClick">{:__blang('bilder_step_finish')}</vxp-button>
+                @click="{$id}FinishClick">{:__blang('builder_step_finish')}</vxp-button>
 
         </div>
         {/if}

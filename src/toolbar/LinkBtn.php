@@ -57,7 +57,7 @@ class LinkBtn extends Bar
 
     const {$btnId}Click = () => {
         if({$table}SelectedSize.value == 0) {
-            VxpMessage.warning(__blang.bilder_no_data_was_selected);
+            VxpMessage.warning(__blang.builder_no_data_was_selected);
             return false;
         }
     
@@ -74,14 +74,14 @@ class LinkBtn extends Bar
         let confirm = '{$this->confirm}';
         if (confirm && confirm != '0' && confirm != 'false') {
             if (confirm == '1') {
-                let text = '{$this->label}'.trim() || __blang.bilder_this;
-                confirm = __blang.bilder_confirm_to_do_batch_operation + ' [' + text + '] ' + __blang.bilder_action_operation + ' ?';
+                let text = '{$this->label}'.trim() || __blang.builder_this;
+                confirm = __blang.builder_confirm_to_do_batch_operation + ' [' + text + '] ' + __blang.builder_action_operation + ' ?';
             }
             VxpConfirm.open({
-                title : __blang.bilder_operation_tips,
+                title : __blang.builder_operation_tips,
                 content: confirm,
-                confirmText : __blang.bilder_button_ok,
-                cancelText : __blang.bilder_button_cancel,
+                confirmText : __blang.builder_button_ok,
+                cancelText : __blang.builder_button_cancel,
                 confirmType: 'warning',
             }).then((res) => {
                 if(res) {

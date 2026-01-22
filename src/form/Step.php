@@ -275,7 +275,7 @@ class Step implements Renderable
                 errArray = errors;
             });
             if (errArray.length > 0) {
-                VxpMessage.warning(__blang.bilder_validate_form_failed + errArray[0]);
+                VxpMessage.warning(__blang.builder_validate_form_failed + errArray[0]);
                 return false;
             }
             {$stepId}Index.value += 1;

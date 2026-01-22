@@ -32,7 +32,7 @@ class Matches extends Raw
     public function created($type = '')
     {
         parent::created($type);
-        $this->separator = __blang('bilder_default_separator');
+        $this->separator = __blang('builder_default_separator');
     }
 
     public function renderValue()

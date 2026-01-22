@@ -15,7 +15,7 @@ trait HasEnable
         $ids = input('post.ids', '');
         $ids = array_filter(explode(',', $ids), 'strlen');
         if (empty($ids)) {
-            $this->error(__blang('bilder_parameter_error'));
+            $this->error(__blang('builder_parameter_error'));
         }
         $res = 0;
         foreach ($ids as $id) {
@@ -26,9 +26,9 @@ trait HasEnable
             }
         }
         if ($res) {
-            $this->success(__blang('bilder_update_{:num}_records_succeeded', ['num' => $res]));
+            $this->success(__blang('builder_update_{:num}_records_succeeded', ['num' => $res]));
         } else {
-            $this->error(__blang('bilder_update_failed'));
+            $this->error(__blang('builder_update_failed'));
         }
     }
 }

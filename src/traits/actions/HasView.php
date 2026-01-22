@@ -21,11 +21,11 @@ trait HasView
 
         if (request()->isGet()) {
 
-            $builder = $this->builder($this->pageTitle, $this->viewText ?: __blang('bilder_page_view_text'), 'view');
+            $builder = $this->builder($this->pageTitle, $this->viewText ?: __blang('builder_page_view_text'), 'view');
 
             $data = $this->dataModel->field(true)->where($this->getPk(), $id)->find();
             if (!$data) {
-                return $builder->layer()->close(0, __blang('bilder_data_not_found'));
+                return $builder->layer()->close(0, __blang('builder_data_not_found'));
             }
 
             $form = $builder->form();
@@ -41,7 +41,7 @@ trait HasView
             return $builder->render();
         }
 
-        $this->error(__blang('bilder_not_allowed'));
+        $this->error(__blang('builder_not_allowed'));
     }
 
     protected function turn($rows)
@@ -96,7 +96,7 @@ trait HasView
                 || $displayer instanceof displayer\Number || $displayer instanceof displayer\Textarea
             ) {
 
-                $row->show($fieldName, $row->getLabel())->default(__blang('bilder_value_is_empty'));
+                $row->show($fieldName, $row->getLabel())->default(__blang('builder_value_is_empty'));
             } else if ($displayer instanceof displayer\Select && $displayer->isAjax()) { // multipleSelect(ajax) / select(ajax)
 
                 $ajax = $displayer->getAjax();
@@ -120,12 +120,12 @@ trait HasView
             } else if ($displayer instanceof displayer\SwitchBtn) {
 
                 $pair = $displayer->getPair();
-                $options = [$pair['on'] => __blang('bilder_option_on'), $pair['off'] => __blang('bilder_option_off')];
+                $options = [$pair['on'] => __blang('builder_option_on'), $pair['off'] => __blang('builder_option_off')];
                 $row->match($fieldName, $row->getLabel())->options($options)->default($default);
             } else if (!($displayer instanceof displayer\MultipleFile
                 || $displayer instanceof displayer\Divider || $displayer instanceof displayer\Html)) {
 
-                $row->raw($fieldName, $row->getLabel())->default(__blang('bilder_value_is_empty'));
+                $row->raw($fieldName, $row->getLabel())->default(__blang('builder_value_is_empty'));
             }
 
             $size = $displayer->getSize();

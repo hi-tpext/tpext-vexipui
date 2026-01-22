@@ -185,7 +185,7 @@ class Tree extends Widget implements Renderable
     public function fill($treeData, $textField = 'name', $idField = 'id', $pidField = 'parent_id', $rootText = '全部')
     {
         if ($rootText == '全部') {
-            $rootText = __blang('bilder_left_tree_text_all');
+            $rootText = __blang('builder_left_tree_text_all');
         }
 
         $this->rootText = $rootText;

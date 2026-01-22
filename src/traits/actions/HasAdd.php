@@ -13,7 +13,7 @@ trait HasAdd
     {
         if (request()->isGet()) {
 
-            $builder = $this->builder($this->pageTitle, $this->addText ?: __blang('bilder_page_add_text'), 'add');
+            $builder = $this->builder($this->pageTitle, $this->addText ?: __blang('builder_page_add_text'), 'add');
             $form = $builder->form();
             $data = [];
             $this->form = $form;

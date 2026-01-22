@@ -141,9 +141,9 @@ class Upload extends Controller
                     'success' => 0,
                     'uploaded' => 0,
                     'state' => 'ERROE',
-                    'message' => __blang('bilder_file_uploading_failed') . '-' . $up->errorInfo,
-                    'title' => __blang('bilder_file_uploading_failed') . '-' . $up->errorInfo,
-                    'info' => __blang('bilder_file_uploading_failed') . '-' . $up->errorInfo,
+                    'message' => __blang('builder_file_uploading_failed') . '-' . $up->errorInfo,
+                    'title' => __blang('builder_file_uploading_failed') . '-' . $up->errorInfo,
+                    'info' => __blang('builder_file_uploading_failed') . '-' . $up->errorInfo,
                     'class' => 'error'
                 ]
             );
@@ -158,13 +158,13 @@ class Upload extends Controller
                     return json(
                         [
                             "success" => 1,
-                            "message" => __blang('bilder_file_uploading_succeeded'),
+                            "message" => __blang('builder_file_uploading_succeeded'),
                             "url" => $newPath,
                         ]
                     );
                 case 'dropzone':
                     return json(
-                        ['status' => 200, 'info' => __blang('bilder_file_uploading_succeeded'), 'picurl' => $newPath]
+                        ['status' => 200, 'info' => __blang('builder_file_uploading_succeeded'), 'picurl' => $newPath]
                     );
                 case 'tinymce':
                     return json(
@@ -191,7 +191,7 @@ class Upload extends Controller
                     return json(
                         [
                             "status" => 1,
-                            "info" => __blang('bilder_file_uploading_succeeded'),
+                            "info" => __blang('builder_file_uploading_succeeded'),
                             "url" => $newPath,
                         ]
                     );
@@ -264,7 +264,7 @@ class Upload extends Controller
         if ($picurl) {
             return json(['state' => 200, 'picurl' => $picurl]);
         } else {
-            return json(['state' => 500, 'message' => __blang('bilder_file_uploading_failed')]);
+            return json(['state' => 500, 'message' => __blang('builder_file_uploading_failed')]);
         }
     }
 

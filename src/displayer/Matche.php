@@ -35,7 +35,7 @@ class Matche extends Raw
 
     public function yesOrNo()
     {
-        $this->options = [1 => __blang('bilder_option_yes'), 0 => __blang('bilder_option_no')];
+        $this->options = [1 => __blang('builder_option_yes'), 0 => __blang('builder_option_no')];
         return $this;
     }
 }

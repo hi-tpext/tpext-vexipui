@@ -10,12 +10,12 @@
                                 :src="$__getImageOrFileIco({$VModel}__thumbs[index] || file, {$id}Op)"
                                 :alt="file" />
                             <figcaption>
-                                <span title="{:__blang('bilder_action_view')}" class="opt-btn preview-file"
+                                <span title="{:__blang('builder_action_view')}" class="opt-btn preview-file"
                                     @click="previewFile(file, {$VModel}, {$id}Op)">
                                     <i class="mdi mdi-eye"></i>
                                 </span>
                                 {if condition="$canUpload"}
-                                <span title="{:__blang('bilder_action_delete')}" class="opt-btn delete-file"
+                                <span title="{:__blang('builder_action_delete')}" class="opt-btn delete-file"
                                     @click="{$id}RemoveFile(row, index)">
                                     <i class="mdi mdi-delete"></i>
                                 </span>
@@ -33,12 +33,12 @@
                         <figure>
                             <img object-fit="fill" src="{$cover}" alt="cover" />
                             <figcaption>
-                                <span title="{:__blang('bilder_upload_nwe_file')}" class="opt-btn upload-file"
+                                <span title="{:__blang('builder_upload_nwe_file')}" class="opt-btn upload-file"
                                     @click="{$id}UploadFile(row)">
                                     <i class="mdi mdi-folder-open"></i>
                                 </span>
                                 {if condition="$showChooseBtn || ($inTable && !$showUploadBtn)"}
-                                <span title="{:__blang('bilder_choose_uploaded_file')}" class="opt-btn choose-file"
+                                <span title="{:__blang('builder_choose_uploaded_file')}" class="opt-btn choose-file"
                                     @click="{$id}ChooseFile(row)">
                                     <i class="mdi mdi mdi-file-find"></i>
                                 </span>
@@ -65,15 +65,15 @@
             v-model:value="{$VModel}">
             <template #after>
                 {if condition="$showUploadBtn"}
-                <span title="{:__blang('bilder_upload_nwe_file')}" class="opt-btn upload-file"
+                <span title="{:__blang('builder_upload_nwe_file')}" class="opt-btn upload-file"
                     @click="{$id}UploadFile(row)">
-                    <i class="mdi mdi-folder-open"></i>{:__blang('bilder_upload_file_button')}
+                    <i class="mdi mdi-folder-open"></i>{:__blang('builder_upload_file_button')}
                 </span>
                 {/if}
                 {if condition="$showChooseBtn"}
-                <span title="{:__blang('bilder_choose_uploaded_file')}" class="opt-btn choose-file"
+                <span title="{:__blang('builder_choose_uploaded_file')}" class="opt-btn choose-file"
                     @click="{$id}ChooseFile(row)">
-                    <i class="mdi mdi mdi-file-find"></i>{:__blang('bilder_choose_file_button')}
+                    <i class="mdi mdi mdi-file-find"></i>{:__blang('builder_choose_file_button')}
                 </span>
                 {/if}
             </template>
@@ -84,20 +84,20 @@
                 id="{$id}-input-div" v-model:value="{$VModel}">
             </vxp-input>
             {if condition="$showUploadBtn"}
-            <vxp-button size="small" title="{:__blang('bilder_upload_nwe_file')}">
+            <vxp-button size="small" title="{:__blang('builder_upload_nwe_file')}">
                 <span class="opt-btn upload-file" @click="{$id}UploadFile(row)">
                     <i class="mdi mdi-folder-open"></i>
                     {if condition="!$inTable"}
-                    {:__blang('bilder_upload_file_button')}
+                    {:__blang('builder_upload_file_button')}
                     {/if}
                 </span>
             </vxp-button>
             {/if}
             {if condition="$showChooseBtn"}
-            <vxp-button size="small" title="{:__blang('bilder_choose_uploaded_file')}">
+            <vxp-button size="small" title="{:__blang('builder_choose_uploaded_file')}">
                 <span class="opt-btn choose-file" @click="{$id}ChooseFile(row)"><i class="mdi mdi mdi-file-find"></i>
                     {if condition="!$inTable"}
-                    {:__blang('bilder_choose_file_button')}
+                    {:__blang('builder_choose_file_button')}
                     {/if}
                 </span>
             </vxp-button>

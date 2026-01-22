@@ -431,7 +431,7 @@ class MultipleFile extends Field
     const {$fieldId}UploadFile = (row) => {
         {$fieldId}Row = row;
         if({$fieldId}Op.value.fileNumLimit > 1 && {$fieldId}FileNum >= {$fieldId}Op.value.fileNumLimit) {
-            VxpMessage.warning(__blang.bilder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
+            VxpMessage.warning(__blang.builder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
             return false;
         }
         {$fieldId}UploadRef.value.click();
@@ -440,7 +440,7 @@ class MultipleFile extends Field
     const {$fieldId}ChooseFile = (row) => {
         {$fieldId}Row = row;
         if({$fieldId}Op.value.fileNumLimit > 1 && {$fieldId}FileNum >= {$fieldId}Op.value.fileNumLimit) {
-            VxpMessage.warning(__blang.bilder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
+            VxpMessage.warning(__blang.builder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
             return false;
         }
 
@@ -449,7 +449,7 @@ class MultipleFile extends Field
 
         layer.open({
             type: 2,
-            title: __blang.bilder_choose_uploaded_file,
+            title: __blang.builder_choose_uploaded_file,
             shadeClose: false,
             scrollbar: false,
             shade: 0.3,
@@ -469,9 +469,9 @@ class MultipleFile extends Field
                         return false; //阻止系统默认回车事件
                     }
                     if (event.keyCode === 0x1B) {
-                        var index2 = layer.msg(__blang.bilder_confirm_close_this_window, {
+                        var index2 = layer.msg(__blang.builder_confirm_close_this_window, {
                             time: 2000,
-                            btn: [__blang.bilder_button_ok, __blang.bilder_button_cancel],
+                            btn: [__blang.builder_button_ok, __blang.builder_button_cancel],
                             yes: function (params) {
                                 layer.close(index);
                                 layer.close(index2);
@@ -491,10 +491,10 @@ class MultipleFile extends Field
     const {$fieldId}RemoveFile = (row, index) => {
         {$fieldId}Row = row;
         VxpConfirm.open({
-            title : __blang.bilder_operation_tips,
-            content: __blang.bilder_confirm_to_remove_file,
-            confirmText : __blang.bilder_button_ok,
-            cancelText : __blang.bilder_button_cancel,
+            title : __blang.builder_operation_tips,
+            content: __blang.builder_confirm_to_remove_file,
+            confirmText : __blang.builder_button_ok,
+            cancelText : __blang.builder_button_cancel,
         }).then((res) => {
             if(res) {
                 let files = {$fieldId}Row ? {$fieldId}Row.{$fieldName}.split(',').filter(x => x.trim()) : {$VModel}.split(',').filter(x => x.trim());
@@ -510,7 +510,7 @@ class MultipleFile extends Field
 
     const {$fieldId}BeforeAddFile = (file) => {
         if({$fieldId}Op.value.fileNumLimit > 1 && {$fieldId}FileNum >= {$fieldId}Op.value.fileNumLimit) {
-            VxpMessage.warning(__blang.bilder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
+            VxpMessage.warning(__blang.builder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
             return false;
         }
         return true;
@@ -519,17 +519,17 @@ class MultipleFile extends Field
     const {$fieldId}BeforeUpload = (file) => {
         return new Promise((resolve, reject) => {
             if({$fieldId}Op.value.fileNumLimit > 1 && {$fieldId}FileNum >= {$fieldId}Op.value.fileNumLimit) {
-                VxpMessage.warning(__blang.bilder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
+                VxpMessage.warning(__blang.builder_maximum_upload_files_num_is + {$fieldId}Op.value.fileNumLimit);
                 reject();
             }
             if({$fieldId}Op.value.fileSingleSizeLimit && file.size > {$fieldId}Op.value.fileSingleSizeLimit) {
                 let limitSize = {$fieldId}Op.value.fileSingleSizeLimit > 1024 * 1024 ? ({$fieldId}Op.value.fileSingleSizeLimit/1024/1024).toFixed(2) + 'MB' : ({$fieldId}Op.value.fileSingleSizeLimit/1024).toFixed(2) +'KB';
-                VxpMessage.warning(__blang.bilder_file_size_cannot_exceed + ({$fieldId}Op.value.fileSingleSizeLimit / 1024) + 'kb' + __blang.bilder_please_upload_again);
+                VxpMessage.warning(__blang.builder_file_size_cannot_exceed + ({$fieldId}Op.value.fileSingleSizeLimit / 1024) + 'kb' + __blang.builder_please_upload_again);
                 reject();
             }
             let ext = file.name.replace(/.+?\.(\w+)$/, '$1');
             if(!{$fieldId}Op.value.ext.includes(ext)) {
-                VxpMessage.warning(file.name + __blang.bilder_file_type_suffix_allowed_is + ':' + {$fieldId}Op.value.ext.join(', '));
+                VxpMessage.warning(file.name + __blang.builder_file_type_suffix_allowed_is + ':' + {$fieldId}Op.value.ext.join(', '));
                 reject();
             }
             {$fieldId}Op.value.data = {
@@ -545,7 +545,7 @@ class MultipleFile extends Field
     const {$fieldId}Error = (file, error) => {
         VxpNotice.open({
             type: 'error',
-            content: __blang.bilder_file_uploading_failed,
+            content: __blang.builder_file_uploading_failed,
             placement: 'top-right',
             duration: 2000,
         });
@@ -556,7 +556,7 @@ class MultipleFile extends Field
         {$fieldId}PushFiles(file.response.url);
         VxpNotice.open({
             type: 'success',
-            content: __blang.bilder_file_uploading_succeeded,
+            content: __blang.builder_file_uploading_succeeded,
             placement: 'top-right',
             duration: 2000,
         });
@@ -641,7 +641,7 @@ EOT;
             'showChooseBtn' => $this->showChooseBtn,
             'showUploadBtn' => $this->showUploadBtn,
             'thumbnailStyle' => 'style="width:' . $this->jsOptions['thumbnailWidth'] . 'px;height:' . $this->jsOptions['thumbnailHeight'] . 'px;"',
-            'placeholder' => $this->placeholder ?: __blang('bilder_please_select') . $this->label
+            'placeholder' => $this->placeholder ?: __blang('builder_please_select') . $this->label
         ];
     }
 
@@ -667,7 +667,7 @@ EOT;
             return $this;
         }
 
-        throw new \InvalidArgumentException(__blang('bilder_invalid_argument_exception') . ' : ' . $name);
+        throw new \InvalidArgumentException(__blang('builder_invalid_argument_exception') . ' : ' . $name);
     }
 
     /**

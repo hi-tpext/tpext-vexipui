@@ -15,11 +15,11 @@ trait HasEdit
 
         if (request()->isGet()) {
 
-            $builder = $this->builder($this->pageTitle, $this->editText ?: __blang('bilder_page_edit_text'), 'edit');
+            $builder = $this->builder($this->pageTitle, $this->editText ?: __blang('builder_page_edit_text'), 'edit');
 
             $data = $this->dataModel->field(true)->where($this->getPk(), $id)->find();
             if (!$data) {
-                return $builder->layer()->close(0, __blang('bilder_data_not_found'));
+                return $builder->layer()->close(0, __blang('builder_data_not_found'));
             }
 
             $form = $builder->form();

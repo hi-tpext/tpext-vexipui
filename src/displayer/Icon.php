@@ -174,7 +174,7 @@ class Icon extends Text
         })
         .catch(e => {
             console.log(e);
-            VxpMessage.error(__blang.bilder_network_error + (e.message || JSON.stringify(e)));
+            VxpMessage.error(__blang.builder_network_error + (e.message || JSON.stringify(e)));
         });
     };
 EOT;

@@ -12,8 +12,8 @@ class DateTimeRange extends DateTime
     {
         parent::created($type);
         $this->jsOptions['range'] = true;
-        $this->jsOptions['start-placeholder'] = __blang('bilder_date_range_from');
-        $this->jsOptions['end-placeholder'] = __blang('bilder_date_range_to');
+        $this->jsOptions['start-placeholder'] = __blang('builder_date_range_from');
+        $this->jsOptions['end-placeholder'] = __blang('builder_date_range_to');
     }
 
     /**

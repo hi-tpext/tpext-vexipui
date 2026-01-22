@@ -34,7 +34,7 @@ class Import extends Controller
         }
 
         if ($fileSize == '' || empty($pageToken) || empty($successUrl)) {
-            $this->error(__blang('bilder_parameter_error'));
+            $this->error(__blang('builder_parameter_error'));
         }
 
         $importpagetoken = Session::get('importpagetoken');
@@ -42,7 +42,7 @@ class Import extends Controller
         $_pageToken = md5($importpagetoken . $acceptedExts . $fileSize);
 
         if ($_pageToken != $pageToken) {
-            $this->error(__blang('bilder_validate_failed'));
+            $this->error(__blang('builder_validate_failed'));
         }
 
         $config = Module::getInstance()->getConfig();
@@ -59,7 +59,7 @@ class Import extends Controller
         $builder = Builder::getInstance();
 
         $form = $builder->form();
-        $form->file('file', __blang('bilder_action_upload_file'))->required()
+        $form->file('file', __blang('builder_action_upload_file'))->required()
             ->storageDriver($driver)
             ->extTypes($acceptedExts)->jsOptions(['fileSingleSizeLimit' => (int)$fileSize * 1024 * 1024]);
 
@@ -77,7 +77,7 @@ class Import extends Controller
      */
     public function afterSuccess()
     {
-        $builder = Builder::getInstance(__blang('bilder_operation_tips'));
+        $builder = Builder::getInstance(__blang('builder_operation_tips'));
 
         $fileurl = input('fileurl');
 

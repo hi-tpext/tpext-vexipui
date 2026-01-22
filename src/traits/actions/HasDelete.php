@@ -15,7 +15,7 @@ trait HasDelete
         $ids = input('post.ids', '');
         $ids = array_filter(explode(',', $ids), 'strlen');
         if (empty($ids)) {
-            $this->error(__blang('bilder_parameter_error'));
+            $this->error(__blang('builder_parameter_error'));
         }
         $res = 0;
         foreach ($ids as $id) {
@@ -29,9 +29,9 @@ trait HasDelete
         }
 
         if ($res) {
-            $this->success(__blang('bilder_delete_{:num}_records_succeeded', ['num' => $res]));
+            $this->success(__blang('builder_delete_{:num}_records_succeeded', ['num' => $res]));
         } else {
-            $this->error(__blang('bilder_delete_failed'));
+            $this->error(__blang('builder_delete_failed'));
         }
     }
 

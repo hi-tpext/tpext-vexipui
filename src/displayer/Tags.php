@@ -196,8 +196,8 @@ EOT;
     public function customVars()
     {
         return [
-            'editText' => __blang('bilder_page_edit_text'),
-            'placeholder' => $this->placeholder ?: __blang('bilder_please_enter') . $this->label
+            'editText' => __blang('builder_page_edit_text'),
+            'placeholder' => $this->placeholder ?: __blang('builder_please_enter') . $this->label
         ];
     }
 }

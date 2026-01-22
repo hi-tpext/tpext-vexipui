@@ -101,7 +101,7 @@ class Split extends Column
     });
     const {$splitId}ActionTitle = computed({
         get() {
-            return {$splitId}Open.value ? __blang.bilder_action_close_left_tree : __blang.bilder_action_open_left_tree;
+            return {$splitId}Open.value ? __blang.builder_action_close_left_tree : __blang.builder_action_open_left_tree;
         }
     });
 

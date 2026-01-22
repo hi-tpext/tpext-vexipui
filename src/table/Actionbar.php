@@ -243,7 +243,7 @@ class Actionbar extends Toolbar
             $url = (string) url('edit', ['id' => '__data.pk__']);
         }
         if ($attr == 'title="编辑"') {
-            $attr = 'title="' . __blang('bilder_action_edit') . '"';
+            $attr = 'title="' . __blang('builder_action_edit') . '"';
         }
         $this->actionBtn('edit', $label)->href($url)->icon($icon)->type($type)->addAttr($attr);
         return $this;
@@ -265,7 +265,7 @@ class Actionbar extends Toolbar
             $url = (string) url('view', ['id' => '__data.pk__']);
         }
         if ($attr == 'title="查看"') {
-            $attr = 'title="' . __blang('bilder_action_view') . '"';
+            $attr = 'title="' . __blang('builder_action_view') . '"';
         }
         $this->actionBtn('view', $label)->href($url)->icon($icon)->type($type)->addAttr($attr);
         return $this;
@@ -288,7 +288,7 @@ class Actionbar extends Toolbar
             $postUrl = (string) url('delete');
         }
         if ($attr == 'title="删除"') {
-            $attr = 'title="' . __blang('bilder_action_delete') . '"';
+            $attr = 'title="' . __blang('builder_action_delete') . '"';
         }
         $this->actionBtn('delete', $label)->postRowid($postUrl, $confirm)->icon($icon)->type($type)->addAttr($attr);
         return $this;
@@ -311,7 +311,7 @@ class Actionbar extends Toolbar
             $postUrl = (string) url('enable', ['state' => 0]);
         }
         if ($attr == 'title="禁用"') {
-            $attr = 'title="' . __blang('bilder_action_disable') . '"';
+            $attr = 'title="' . __blang('builder_action_disable') . '"';
         }
         $this->actionBtn('disable', $label)->postRowid($postUrl, $confirm)->icon($icon)->type($type)->addAttr($attr);
         return $this;
@@ -334,7 +334,7 @@ class Actionbar extends Toolbar
             $postUrl = (string) url('enable', ['state' => 1]);
         }
         if ($attr == 'title="启用"') {
-            $attr = 'title="' . __blang('bilder_action_enable') . '"';
+            $attr = 'title="' . __blang('builder_action_enable') . '"';
         }
         $this->actionBtn('enable', $label)->postRowid($postUrl, $confirm)->icon($icon)->type($type)->addAttr($attr);
         return $this;
@@ -350,10 +350,10 @@ class Actionbar extends Toolbar
     public function btnEnableAndDisable($enableTitle = '启用', $disableTitle = '禁用')
     {
         if ($enableTitle == '启用') {
-            $enableTitle = __blang('bilder_action_enable');
+            $enableTitle = __blang('builder_action_enable');
         }
         if ($disableTitle == '禁用') {
-            $disableTitle = __blang('bilder_action_disable');
+            $disableTitle = __blang('builder_action_disable');
         }
         $this->btnEnable()->getCurrent()->attr('title="' . $enableTitle . '"');
         $this->btnDisable()->getCurrent()->attr('title="' . $disableTitle . '"');
@@ -411,7 +411,7 @@ class Actionbar extends Toolbar
         }
 
         if (preg_match('/__data\.([\w\.]+)__/i', $postUrl, $mch)) {
-            Builder::getInstance()->notify(__blang('bilder_url_format_invalid') . '[' . $mch[0] . ']', 'warning');
+            Builder::getInstance()->notify(__blang('builder_url_format_invalid') . '[' . $mch[0] . ']', 'warning');
         }
 
         $this->actionBtn($name, $label)->postRowid($postUrl, $confirm)->icon($icon)->type($type)->addAttr($attr);

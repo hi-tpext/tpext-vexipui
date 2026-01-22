@@ -397,7 +397,7 @@ EOT;
                 return resolve(list);
             })
             .catch(e => {
-                {$fieldId}Error.value = __blang.bilder_network_error;
+                {$fieldId}Error.value = __blang.builder_network_error;
                 throw e;
             });
         });
@@ -415,7 +415,7 @@ EOT;
             {$fieldId}Options.value = selected.map(x => {
                 return {
                     value: x,
-                    label: __blang.bilder_loading
+                    label: __blang.builder_loading
                 };
             });
             {$fieldId}Op.value.loading = true;
@@ -513,7 +513,7 @@ EOT;
             }
         })
         .catch(e => {
-            {$fieldId}Error.value = __blang.bilder_network_error;
+            {$fieldId}Error.value = __blang.builder_network_error;
             throw e;
         });
     };
@@ -541,7 +541,7 @@ EOT;
             row.__field_info__['{$fieldName}'].options = selected.map(x => {
                 return {
                     value: x,
-                    label: __blang.bilder_loading
+                    label: __blang.builder_loading
                 };
             });
             {$fieldId}LoadData(selected).then(options => {
@@ -563,7 +563,7 @@ EOT;
             'prefix' => $this->prefix,
             'suffix' => $this->suffix,
             'remote' => $this->isAjax(),
-            'placeholder' => $this->placeholder ?: __blang('bilder_please_select') . $this->label
+            'placeholder' => $this->placeholder ?: __blang('builder_please_select') . $this->label
         ];
     }
 

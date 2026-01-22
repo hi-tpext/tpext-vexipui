@@ -75,7 +75,7 @@ class DropdownBtns extends Bar
     const {$btnId}Change = (value) => {
         if({$btnId}Name == 'choose_columns') {
             if (value.length == 0) {
-                VxpMessage.error(__blang.bilder_show_at_least_one_field);
+                VxpMessage.error(__blang.builder_show_at_least_one_field);
             }
             if({$btnId}ChooseColumnTimer) {
                 clearTimeout({$btnId}ChooseColumnTimer);
