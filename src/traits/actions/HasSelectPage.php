@@ -99,14 +99,15 @@ trait HasSelectPage
             $list = $this->dataModel->getOptionsData();
             $data = [];
 
+            $arr = array_filter(explode(',', $selected));
+
             foreach ($list as $k => $v) {
                 if ($selected !== '') {
-                    if ($k == $selected) {
+                    if (in_array($k, $arr)) {
                         $data[] = [
                             '__id__' => $k,
                             '__text__' => $v,
                         ];
-                        break;
                     }
                 } else {
                     $data[] = [
