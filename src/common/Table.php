@@ -78,7 +78,6 @@ class Table extends TWrapper implements Renderable
     protected $sortOrder = '';
     protected $partial = false;
     protected $delay = true; //延迟读取数据，调用fill()填充数据后取消延迟
-    protected $convertScripts = [];
 
     /**
      * Undocumented variable
@@ -537,20 +536,6 @@ class Table extends TWrapper implements Renderable
     }
 
     /**
-     * Undocumented function
-     * 
-     * @param string|array $script
-     * @return void
-     */
-    public function addConvertScript($script)
-    {
-        if (!is_array($script)) {
-            $script = [$script];
-        }
-        $this->convertScripts = array_merge($this->convertScripts, $script);
-    }
-
-    /**
      * 获取一个搜索
      *
      * @return Search
@@ -650,7 +635,7 @@ class Table extends TWrapper implements Renderable
     const {$table}PageSize = ref({$this->pageSize});
 
     let {$table}ActiveRowTurn = false;
-    let {$table}Data = ref({$initData});
+    const {$table}Data = ref({$initData});
     const {$table}useCheckbox = {$useCheckbox};
 
     const {$table}PagerConfig = ref({
@@ -915,7 +900,7 @@ class Table extends TWrapper implements Renderable
             {$table}ActiveRow.value = row;
             setTimeout(() => {
                 {$table}ActiveRowTurn = false;
-            }, 20);
+            }, 1);
         }
     };
 
@@ -976,41 +961,52 @@ EOT;
 
             $scripts = [];
 
-            $this->convertScripts = array_filter($this->convertScripts, 'strlen');
-            $convertScripts = '';
-            if (count($this->convertScripts)) {
-                $convertScripts = implode("\n\t\t\t", $this->convertScripts);
-            }
-
-            $scripts[] = <<<EOT
-
-        const {$table}Convert = (row) => {
-            {$convertScripts}
-            return row;
-        };
-EOT;
-
             foreach ($this->autoPost as $fieldName => $val) {
+                $autoPost = $val['autoPost'];
+                $convertScript = $val['convertScript'];
+                $watchKey = str_replace('.', '?.', $fieldName);
+
                 $eventKey = $table . preg_replace('/\W/', '_', $fieldName) . 'Change';
-                $url = $val['url'];
-                $refresh = $val['refresh'] ? 'true' : 'false';
-                $isText = in_array($val['displayerType'], ['Text', 'Textarea', 'Password']) ? 'true' : 'false';
-                $delay = in_array($val['displayerType'], ['Number']) ?
-                    1000 : (in_array($val['displayerType'], ['RangeSlider', 'Checkbox', 'MultipleSelect']) ? 700 : 300); //多选防抖时间长一点
+
+                $url = $autoPost['url'];
+                $refresh = $autoPost['refresh'] ? 'true' : 'false';
+                $isText = in_array($autoPost['displayerType'], ['Text', 'Textarea', 'Password']) ? 'true' : 'false';
+                $delay = in_array($autoPost['displayerType'], ['Number']) ?
+                    1000 : (in_array($autoPost['displayerType'], ['RangeSlider', 'Checkbox', 'MultipleSelect']) ? 700 : 300); //多选防抖时间长一点
+
+                $convertScript = implode("\n\t\t\t", $convertScript);
 
                 $scripts[] = <<<EOT
 
+        const {$eventKey}Convert = (row) => {
+            {$convertScript}
+            return row;
+        };
+
         let {$eventKey}Timer = null;
+        if('{$fieldName}'.indexOf('.') > -1) { // 处理aa.bb 这样的深层结构
+            let arr = '{$fieldName}'.split('.');
+            if({$table}ActiveRow.value[arr[0]] === undefined) {
+                {$table}ActiveRow.value[arr[0]] = {[arr[1]]: null};
+            }
+        }
         watch(
-            () => {$table}ActiveRow.value.{$fieldName},
+            () => {$table}ActiveRow.value.{$watchKey},
             (newValue, oldValue) => {
                 if(!{$table}ActiveRowTurn) {
                     let id = {$table}ActiveRow.value.__pk__;
                     if(!{$table}ActiveRow.value || !{$table}ActiveRow.value.__pk__) {
                         return;
                     }
-                    let rowData = {$table}Convert({ {$fieldName} : newValue });
-                    let value = rowData.{$fieldName};
+                    let rowData = Object.assign({}, {$table}ActiveRow.value);
+                    if('{$fieldName}'.indexOf('.') > -1) {
+                        let arr = '{$fieldName}'.split('.');
+                        rowData[arr[0]] = {[arr[1]]: newValue};
+                    } else {
+                        rowData['{$fieldName}'] = newValue;
+                    }
+                    rowData = {$eventKey}Convert(rowData);
+                    let value = rowData.{$watchKey};
                     value = Array.isArray(value) ? value.join(',') : value;
                     {$table}ActiveRowChanged['{$fieldName}'] = value;
                     if($isText) {
@@ -1029,7 +1025,8 @@ EOT;
                         {$table}SendData('{$url}', params, $refresh);
                     }, {$delay});
                 }
-            }
+            },
+            { deep: true }
         );
 
 EOT;
@@ -1272,15 +1269,20 @@ EOT;
     /**
      * Undocumented function
      * 
-     * @param mixed $val
+     * @param string $name
+     * @param array $autoPost
+     * @param array $convertScript
      * @return $this
      */
-    public function addAutoPost($name, $val = [])
+    public function addAutoPost($name, $autoPost = [], $convertScript = [])
     {
         if (strstr($name, '[')) {
             $name = str_replace(['[', ']'], ['.', ''], $name);
         }
-        $this->autoPost[$name] = $val;
+        $this->autoPost[$name] = [
+            'autoPost' => $autoPost,
+            'convertScript' => $convertScript,
+        ];
         return $this;
     }
 

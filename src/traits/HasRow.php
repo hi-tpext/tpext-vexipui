@@ -104,6 +104,16 @@ trait HasRow
      *
      * @return string
      */
+    public function getClassName()
+    {
+        return preg_replace('/\W/', '-', $this->name);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     public function getLabel()
     {
         return $this->label;

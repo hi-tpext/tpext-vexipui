@@ -175,6 +175,16 @@ class Field implements Fillable
      *
      * @return string
      */
+    public function getClassName()
+    {
+        return $this->wrapper->getClassName();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
     public function getOriginName()
     {
         return $this->wrapper->getName();
@@ -1180,7 +1190,7 @@ EOT;
 
         if ($this->formMode == 'table' && $this->autoPost) {
             if (Builder::checkUrl($this->autoPost['url'])) {
-                $this->getForm()->addAutoPost($this->name, $this->autoPost);
+                $this->getForm()->addAutoPost($this->name, $this->autoPost,$this->convertScript);
             } else {
                 $this->readonly();
             }
@@ -1202,8 +1212,6 @@ EOT;
             if (!$this->inTable) { //不在items中
                 $this->getForm()->addConvertScript($this->convertScript);
             }
-        } else if ($this->formMode == 'table' && !empty($this->convertScript)) {
-            $this->getForm()->addConvertScript($this->convertScript);
         }
 
         if (!empty($this->stylesheet)) {
@@ -1392,7 +1400,7 @@ EOT;
             'requiredStyle' => $this->required ? '' : 'style="display: none;"',
             'extKey' => $this->extKey,
             'value' => $this->inTable ? '' : $this->renderValue(),
-            'class' => ' row-' . preg_replace('/\W/', '_', $this->name) . $this->getClass() . $mapClass,
+            'class' => ' row-' . $this->getClassName() . $this->getClass() . $mapClass,
             'attr' => $this->getAttrWithStyle(),
             'size' => $this->adjustSize(),
             'labelClass' => is_numeric($this->size[0]) && $this->size[0] < 12 ? $this->labelClass . ' control-label' : $this->labelClass . ' full-label',
