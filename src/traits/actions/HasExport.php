@@ -7,6 +7,7 @@ use tpext\builder\displayer;
 use tpext\builder\logic\Export;
 use tpext\builder\common\Module;
 use tpext\builder\table\TColumn;
+use think\db\LazyCollection;
 
 /**
  * 导出
@@ -101,7 +102,7 @@ trait HasExport
         }
 
         $buildTable = null;
-        if ($data instanceof \Generator) { //生成器模式
+        if ($data instanceof \Generator || $data instanceof LazyCollection) { //生成器模式
             $empty = [];
             $this->buildTable($empty, true);
             $this->table->lockForExporting();
