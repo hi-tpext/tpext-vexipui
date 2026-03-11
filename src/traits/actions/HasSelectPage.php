@@ -174,10 +174,13 @@ trait HasSelectPage
 
             if ($q) {
                 if ($this->selectSearch) {
+                    if (is_numeric($q)) {
+                        $sarr = array_filter(explode('|', $this->selectSearch));
+                        if (!in_array($idField, $sarr)) {
+                            $this->selectSearch .= '|' . $idField;
+                        }
+                    }
                     $where[] = [$this->selectSearch, 'like', '%' . $q . '%'];
-                }
-                if (is_numeric($q)) {
-                    $whereOr[] = [$idField, '=', $q];
                 }
             }
 
