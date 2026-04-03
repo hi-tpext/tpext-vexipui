@@ -4,7 +4,6 @@ namespace tpext\builder\common;
 
 use think\helper\Arr;
 use tpext\think\View;
-use tpext\builder\form\FRow;
 use tpext\builder\form\When;
 use tpext\builder\search\SRow;
 use tpext\builder\common\Module;
@@ -124,6 +123,10 @@ class Search extends SWrapper implements Renderable
      */
     public function hasDefault(): bool
     {
+        if ($this->tablink && !($this->tablink->getActive() === '' || $this->tablink->getActive() === null)) {
+            return true;
+        }
+
         foreach ($this->rows as $row) {
             if ($row instanceof SRow) {
                 $default = $row->getDisplayer()->getDefault();
