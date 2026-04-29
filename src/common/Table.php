@@ -716,8 +716,16 @@ class Table extends TWrapper implements Renderable
                 __ids__ : ids,
                 __columns__ : {$table}UseChooseColumns.value.join(','),
             },
+            {$search}Data,
             {$table}Sort ? { __sort__ : {$table}Sort } : null,
         );
+
+        params = Object.keys(params)
+            .filter(key => !/^__button\d+$/.test(key) && key != 'search_buttons')
+            .reduce((acc, key) => {
+                acc[key] = params[key];
+                return acc;
+            }, {});
 
         params = {$search}Convert(params);
 
@@ -1288,7 +1296,6 @@ EOT;
 
     /**
      * Undocumented function
-     * @param string $name
      * 
      * @return FieldsContent
      */

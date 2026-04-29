@@ -16,7 +16,7 @@
     <template #default>
         <vxp-table v-if="{$id}Op.visible && {$id}TableData.length > 0" class="vxp-icon-table" v-bind="{$id}Op.gridOp"
             :data="{$id}TableData" @cell-click="{$id}CellClick" ref="{$id}Ref">
-            <vxp-table-column v-for="col in 16" :text-align="'center'" :width="32" :min-width="32" id-key="name">
+            <vxp-table-column v-for="col in 16" :text-align="'center'" :width="32" id-key="name">
                 <template #head="{row}">
                     <!--none-->
                 </template>

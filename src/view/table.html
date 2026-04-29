@@ -24,7 +24,7 @@
                 </div>
             </template>
             {if condition="$useCheckbox"}
-            <vxp-table-column :width="30" :min-width="30" type="selection" :order="0"></vxp-table-column>
+            <vxp-table-column :width="30" type="selection" :order="0" selection-size="small"></vxp-table-column>
             {/if}
             {foreach name="list" id="displayer" key="co" index="i"}
             <vxp-table-column v-bind="{$id}Columns['{$co}']" :class="['current']"
