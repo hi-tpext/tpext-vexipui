@@ -16,6 +16,12 @@
     "require": {
         "intervention/image": "^2.7.1|^3.11.0"
     },
+    "provide": {
+        "tpext/builder": "^3.0"
+    },
+    "replace": {
+        "ichynul/tpextbuilder": "^3.0"
+    },
     "autoload": {
         "psr-4": {
             "tpext\\builder\\": "src/"
