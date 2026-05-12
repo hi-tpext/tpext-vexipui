@@ -20,7 +20,7 @@
         "tpext/builder": "^3.0"
     },
     "replace": {
-        "ichynul/tpextbuilder": "^3.0"
+        "ichynul/tpextbuilder": "*"
     },
     "autoload": {
         "psr-4": {
