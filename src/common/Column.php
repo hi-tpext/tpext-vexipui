@@ -169,7 +169,6 @@ class Column extends Widget implements Renderable
     /**
      * 获取一Swiper
      *
-     * @param integer|string $size col大小
      * @return Swiper
      */
     public function swiper()

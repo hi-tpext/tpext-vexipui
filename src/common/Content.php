@@ -14,6 +14,8 @@ class Content extends Widget implements Renderable
      */
     protected $content;
 
+    protected $contentRaw = '';
+
     protected $partial = false;
 
     /**
@@ -55,6 +57,11 @@ class Content extends Widget implements Renderable
         $this->content = new View($content);
 
         $this->content->assign($vars)->isContent(true);
+
+        if (empty($vars)) {
+            $this->contentRaw = $content;//如果没有变量，那么就不解析模板
+        }
+
         return $this;
     }
 
@@ -72,6 +79,10 @@ class Content extends Widget implements Renderable
     {
         if ($this->partial) {
             return $this->content;
+        }
+
+        if ($this->contentRaw) {
+            return $this->contentRaw;
         }
 
         return $this->content->getContent();
