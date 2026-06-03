@@ -15,7 +15,7 @@ trait HasBase
     /**
      * 数据模型
      *
-     * @var \think\Model
+     * @var \think\Model|mixed
      */
     protected $dataModel;
 
