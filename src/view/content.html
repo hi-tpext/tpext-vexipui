@@ -56,13 +56,17 @@
     "imports": {
       "vue": "/assets/tpextvexipui/lib/vue.esm-browser.prod.js?aver={$aver}",
       "vexip-ui": "/assets/tpextvexipui/lib/vexip-ui.min.js?aver={$aver}",
-      "@vexip-ui/icons": "/assets/tpextvexipui/lib/vexip-ui-icons.min.js?aver={$aver}"
+      "@vexip-ui/icons": "/assets/tpextvexipui/lib/vexip-ui-icons.min.js?aver={$aver}",
+      "@vexip-ui/config": "/assets/tpextvexipui/lib/vexip-ui-config.min.js?aver={$aver}",
+      "@vexip-ui/hooks": "/assets/tpextvexipui/lib/vexip-ui-hooks.min.js?aver={$aver}",
+      "@vexip-ui/utils": "/assets/tpextvexipui/lib/vexip-ui-utils.min.js?aver={$aver}",
+      "@vexip-ui/bem-helper": "/assets/tpextvexipui/lib/vexip-ui-bem-helper.min.js?aver={$aver}"
     }
   }
 </script>
 <script type="module">
   import { {$vueImport} } from 'vue';
-  import { install } from 'vexip-ui';
+  import { install,configLocale} from 'vexip-ui';
   import * as VexipIcon from '@vexip-ui/icons';
 
   import { 
@@ -163,7 +167,18 @@
       };
     }
   });
-  app.use(install, { namespace: 'vxp', prefix: 'vxp'});
+
+  let lang = null;
+  
+  //处理国际化，js文件可能不存在（早期版本没有）
+  try {
+    const { {$jsLang}Locale } = await import('@vexip-ui/config');
+    lang = {$jsLang}Locale();
+  } catch (err) {
+    console.log('load lang failed')
+  }
+
+  app.use(install, { namespace: 'vxp', prefix: 'vxp', locale: lang});
   app.config.globalProperties.$__isImage = __isImage;
   app.config.globalProperties.$__getImageOrFileIco = __getImageOrFileIco;
   window.vm = app.mount('#app');

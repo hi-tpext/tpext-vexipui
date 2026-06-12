@@ -1,6 +1,8 @@
 <?php
 
 return [
+    //see https://www.vexipui.com/en-US/guide/i18n.html#supported-languages
+    'builder_js_lang_key'                     => 'zh-CN',
     'builder_save_succeeded'                  => '保存成功！',
     'builder_save_failed'                     => '保存失败！',
     'builder_network_error'                   => '网络错误！',

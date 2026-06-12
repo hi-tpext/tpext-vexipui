@@ -2,14 +2,12 @@
 
 namespace tpext\builder\common;
 
-use tpext\think\App;
-use think\facade\Lang;
 use tpext\common\ExtLoader;
 use tpext\common\Module as baseModule;
 
 class VexipUi extends baseModule
 {
-    protected $version = '1.1.3';
+    protected $version = '1.2.0';
 
     protected $name = 'tpext.vexipui';
 
@@ -203,6 +201,6 @@ class VexipUi extends baseModule
 
     public function loaded()
     {
-        Lang::load(Module::getInstance()->getRoot() . 'src' . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . App::getDefaultLang() . '.php');
+        $this->loadLang('common');
     }
 }

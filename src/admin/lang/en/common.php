@@ -1,6 +1,8 @@
 <?php
 
 return [
+    //see https://www.vexipui.com/en-US/guide/i18n.html#supported-languages
+    'builder_js_lang_key'                     => 'en-US',
     'builder_save_succeeded'                  => 'Saving succeeded !',
     'builder_save_failed'                     => 'Saving failed !',
     'builder_network_error'                   => 'Network error !',
