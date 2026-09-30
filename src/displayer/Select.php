@@ -4,8 +4,9 @@ namespace tpext\builder\displayer;
 
 use tpext\builder\traits\HasOptions;
 use tpext\builder\traits\HasWhen;
+use tpext\builder\inface\ReleaseAble;
 
-class Select extends Field
+class Select extends Field implements ReleaseAble
 {
     use HasOptions;
     use HasWhen;
@@ -582,7 +583,12 @@ EOT;
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         $this->prevSelect = null;
         parent::destroy();
+        $this->__destroyed__ = true;
     }
 }

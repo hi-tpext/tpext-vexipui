@@ -23,13 +23,16 @@ use tpext\builder\form\ItemsContent;
 use tpext\builder\inface\Renderable;
 use tpext\builder\form\FieldsContent;
 use tpext\builder\displayer\MultipleFile;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
 /**
  * Form class
  */
-class Form extends FWrapper implements Renderable
+class Form extends FWrapper implements Renderable, ReleaseAble
 {
     use HasDom;
+    use HasDestroyOnce;
 
     protected $view = '';
     protected $action = '';
@@ -1206,16 +1209,31 @@ EOT;
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         $this->allContentsEnd();
         foreach ($this->rows as $row) {
-            if ($row instanceof FRow) {
+            if ($row instanceof ReleaseAble) {
                 $row->destroy();
             }
         }
+        // tab/step 是 ReleaseAble（内部挂 FieldsContent 树），先销毁再置空
+        if ($this->tab instanceof ReleaseAble) {
+            $this->tab->destroy();
+        }
         $this->tab = null;
+        if ($this->step instanceof ReleaseAble) {
+            $this->step->destroy();
+        }
         $this->step = null;
-        $this->formData = null;
-        $this->rows = null;
-        $this->data = null;
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）
+        $this->rows = [];
+        $this->__fields__ = null;
+        $this->__items__ = null;
+        $this->data = [];
+        $this->formData = [];
+        $this->__destroyed__ = true;
     }
 }

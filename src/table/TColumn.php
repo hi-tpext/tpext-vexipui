@@ -6,11 +6,14 @@ use tpext\builder\common\Table;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
 use tpext\builder\inface\Renderable;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class TColumn extends TWrapper implements Renderable
+class TColumn extends TWrapper implements Renderable, ReleaseAble
 {
     use HasDom;
     use HasRow;
+    use HasDestroyOnce;
 
     /**
      * Undocumented variable
@@ -198,8 +201,16 @@ class TColumn extends TWrapper implements Renderable
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         $this->table = null;
-        $this->displayer->destroy();
-        $this->displayer = null;
+        // 判空保幂等：二次 destroy 时 displayer 已置 null
+        if ($this->displayer) {
+            $this->displayer->destroy();
+            $this->displayer = null;
+        }
+        $this->__destroyed__ = true;
     }
 }

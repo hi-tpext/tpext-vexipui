@@ -6,11 +6,14 @@ use tpext\builder\common\Search;
 use tpext\builder\traits\HasDom;
 use tpext\builder\traits\HasRow;
 use tpext\builder\inface\Renderable;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class SRow extends SWrapper implements Renderable
+class SRow extends SWrapper implements Renderable, ReleaseAble
 {
     use HasDom;
     use HasRow;
+    use HasDestroyOnce;
 
     protected $filter = '';
 
@@ -110,8 +113,16 @@ class SRow extends SWrapper implements Renderable
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         $this->form = null;
-        $this->displayer->destroy();
-        $this->displayer = null;
+        // 判空保幂等：二次 destroy 时 displayer 已置 null
+        if ($this->displayer) {
+            $this->displayer->destroy();
+            $this->displayer = null;
+        }
+        $this->__destroyed__ = true;
     }
 }

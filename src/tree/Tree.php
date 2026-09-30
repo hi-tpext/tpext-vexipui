@@ -10,11 +10,14 @@ use tpext\builder\common\Widget;
 use tpext\builder\traits\HasDom;
 use tpext\builder\common\Builder;
 use tpext\builder\inface\Renderable;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class Tree extends Widget implements Renderable
+class Tree extends Widget implements Renderable, ReleaseAble
 {
     use HasTreeData;
     use HasDom;
+    use HasDestroyOnce;
 
     protected $onClick = 'alert("`onClick` event was not binded, clicked : "+data.text);';
 
@@ -340,5 +343,17 @@ EOT;
         }
 
         return $viewshow->assign($vars)->getContent();
+    }
+
+    public function destroy()
+    {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）
+        $this->options = [];
+        $this->disabledOptions = [];
+        $this->__destroyed__ = true;
     }
 }

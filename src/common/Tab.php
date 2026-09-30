@@ -7,10 +7,13 @@ use tpext\builder\form\FieldsContent;
 use tpext\builder\inface\Renderable;
 use tpext\builder\traits\HasDom;
 use tpext\think\View;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class Tab extends Widget implements Renderable
+class Tab extends Widget implements Renderable, ReleaseAble
 {
     use HasDom;
+    use HasDestroyOnce;
 
     protected $view = 'tab';
 
@@ -290,6 +293,18 @@ EOT;
 
     public function destroy()
     {
-        $this->rows = null;
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
+        foreach ($this->rows as $row) {
+            if (isset($row['content']) && $row['content'] instanceof ReleaseAble) {
+                $row['content']->destroy();
+            }
+        }
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）
+        $this->rows = [];
+        $this->__fields__ = [];
+        $this->__destroyed__ = true;
     }
 }

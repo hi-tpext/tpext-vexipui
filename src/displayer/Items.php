@@ -349,4 +349,21 @@ class Items extends Field
 EOT;
         $this->convertScript[] = $script;
     }
+
+    public function destroy()
+    {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
+        if ($this->__items_content__) {
+            $this->__items_content__->destroy();
+            $this->__items_content__ = null;
+        }
+
+        $this->form = null;
+
+        parent::destroy();
+        $this->__destroyed__ = true;
+    }
 }

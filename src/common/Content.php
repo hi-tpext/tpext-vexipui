@@ -4,9 +4,13 @@ namespace tpext\builder\common;
 
 use tpext\builder\inface\Renderable;
 use tpext\think\View;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class Content extends Widget implements Renderable
+class Content extends Widget implements Renderable, ReleaseAble
 {
+    use HasDestroyOnce;
+
     /**
      * Undocumented variable
      *
@@ -96,6 +100,11 @@ class Content extends Widget implements Renderable
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         $this->content = null;
+        $this->__destroyed__ = true;
     }
 }

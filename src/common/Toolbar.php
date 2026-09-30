@@ -8,10 +8,13 @@ use tpext\builder\table\TEmpty;
 use tpext\builder\traits\HasDom;
 use tpext\builder\toolbar\BWrapper;
 use tpext\builder\inface\Renderable;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class Toolbar extends BWrapper implements Renderable
+class Toolbar extends BWrapper implements Renderable, ReleaseAble
 {
     use HasDom;
+    use HasDestroyOnce;
 
     protected $view = '';
 
@@ -447,6 +450,22 @@ class Toolbar extends BWrapper implements Renderable
 
     public function destroy()
     {
-        $this->elms = null;
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
+        foreach ($this->elms as $elm) {
+            if ($elm instanceof ReleaseAble || method_exists($elm, 'destroy')) {
+                $elm->destroy();
+            }
+        }
+
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）
+        $this->elms = [];
+        $this->elmsRight = [];
+        $this->elmsLeft = [];
+        $this->__elm__ = null;
+        $this->tEmpty = null;
+        $this->__destroyed__ = true;
     }
 }

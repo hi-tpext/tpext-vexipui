@@ -10,9 +10,13 @@ use tpext\common\ExtLoader;
 use tpext\builder\tree\Tree;
 use tpext\builder\inface\Auth;
 use tpext\builder\inface\Renderable;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class Builder implements Renderable
+class Builder implements Renderable, ReleaseAble
 {
+    use HasDestroyOnce;
+
     protected $view = '';
 
     protected $layout = '';
@@ -1008,10 +1012,16 @@ EOT;
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         foreach ($this->rows as $row) {
             $row->destroy();
         }
 
-        $this->rows = null;
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）
+        $this->rows = [];
+        $this->__destroyed__ = true;
     }
 }

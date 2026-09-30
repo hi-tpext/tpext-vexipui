@@ -17,13 +17,16 @@ use tpext\builder\common\SizeAdapter;
 use tpext\builder\common\Form;
 use tpext\builder\common\Search;
 use tpext\builder\common\Table;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
 /**
  * Field class
  */
-class Field implements Fillable
+class Field implements Fillable, ReleaseAble
 {
     use HasDom;
+    use HasDestroyOnce;
 
     protected $id = '';
     protected $formMode = 'form';
@@ -1681,8 +1684,14 @@ EOT;
 
     public function destroy()
     {
-        $this->data = null;
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
+        // data 声明默认 []，销毁后复位为空数组（保持类型恒定）；wrapper 是对象引用置 null
+        $this->data = [];
         $this->wrapper = null;
+        $this->__destroyed__ = true;
     }
 
     public function getSizeAttr()

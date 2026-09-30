@@ -17,13 +17,16 @@ use tpext\builder\search\SWrapper;
 use tpext\builder\displayer\Button;
 use tpext\builder\inface\Renderable;
 use tpext\builder\form\FieldsContent;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
 /**
  * Search class
  */
-class Search extends SWrapper implements Renderable
+class Search extends SWrapper implements Renderable, ReleaseAble
 {
     use HasDom;
+    use HasDestroyOnce;
 
     protected $id = 'theSearch';
 
@@ -665,6 +668,10 @@ EOT;
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         $this->__fields__ = null;
         $this->__when__ = null;
         if ($this->addTop) {
@@ -677,10 +684,12 @@ EOT;
         }
         $this->tablink = null;
         foreach ($this->rows as $row) {
-            if ($row instanceof SRow) {
+            if ($row instanceof ReleaseAble) {
                 $row->destroy();
             }
         }
-        $this->rows = null;
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）
+        $this->rows = [];
+        $this->__destroyed__ = true;
     }
 }

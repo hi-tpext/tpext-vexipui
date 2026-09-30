@@ -17,13 +17,16 @@ use tpext\builder\inface\Renderable;
 use tpext\builder\table\FieldsContent;
 use tpext\builder\table\MultipleToolbar;
 use tpext\builder\displayer\MultipleFile;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
 /**
  * Table class
  */
-class Table extends TWrapper implements Renderable
+class Table extends TWrapper implements Renderable, ReleaseAble
 {
     use HasDom;
+    use HasDestroyOnce;
 
     protected $js = [];
     protected $css = [];
@@ -1433,15 +1436,27 @@ EOT;
 
     public function destroy()
     {
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
+        }
         $this->__fields__ = null;
+        // toolbar/actionbar 是 Toolbar 系（implements ReleaseAble，destroy 递归释放全部 Bar），原来只置空引用=Bar 全泄漏
+        if ($this->toolbar instanceof ReleaseAble) {
+            $this->toolbar->destroy();
+        }
         $this->toolbar = null;
+        if ($this->actionbar instanceof ReleaseAble) {
+            $this->actionbar->destroy();
+        }
         $this->actionbar = null;
         $this->pagesizeDropdown = null;
         foreach ($this->cols as $col) {
             $col->destroy();
         }
-        $this->cols = null;
-        $this->data = null;
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）；对象引用置 null
+        $this->cols = [];
+        $this->data = [];
         $this->tEmpty = null;
         if ($this->searchForm) {
             $this->searchForm->destroy();
@@ -1455,5 +1470,6 @@ EOT;
             $this->addBottom->destroy();
             $this->addBottom = null;
         }
+        $this->__destroyed__ = true;
     }
 }

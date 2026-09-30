@@ -10,9 +10,13 @@ use tpext\builder\search\SRow;
 use tpext\builder\common\Module;
 use tpext\builder\inface\Renderable;
 use tpext\think\View;
+use tpext\builder\inface\ReleaseAble;
+use tpext\builder\traits\HasDestroyOnce;
 
-class FieldsContent extends FWrapper implements Renderable
+class FieldsContent extends FWrapper implements Renderable, ReleaseAble
 {
+    use HasDestroyOnce;
+
     protected $view = 'fieldscontent';
     protected $rows = [];
     protected $data = [];
@@ -211,9 +215,17 @@ class FieldsContent extends FWrapper implements Renderable
 
     public function destroy()
     {
-        foreach ($this->rows as $row) {
-            $row->destroy();
+        // 已销毁直接返回：同一组件可被多归属路径重复触达（契约见 traits\HasDestroyOnce）
+        if ($this->__destroyed__) {
+            return;
         }
-        $this->rows = null;
+        foreach ($this->rows as $row) {
+            if ($row instanceof ReleaseAble) {
+                $row->destroy();
+            }
+        }
+        // 数组属性复位为空数组（保持类型恒定，二次 destroy 自然幂等）
+        $this->rows = [];
+        $this->__destroyed__ = true;
     }
 }
