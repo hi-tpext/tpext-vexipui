@@ -829,6 +829,9 @@ class Builder implements Renderable, ReleaseAble
      */
     public static function minify($val)
     {
+		if (self::$isWebmanContext) {
+            return Context::get(static::class . '::minify');
+        }
         static::$minify = $val;
     }
 
@@ -946,7 +949,7 @@ EOT;
             $this->onMountedScript[] = $script;
         }
 
-        if (static::$minify) {
+        if (static::isMinify()) {
             $this->js = array_merge(['/assets/minify/min.js'], $this->customJs);
             $this->css = array_merge(['/assets/minify/min.css'], $this->customCss);
         } else {
